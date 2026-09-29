@@ -117,3 +117,24 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# IDEs (Visual Studio Code e IntelliJ/Android Studio)
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Arquivos de Ambiente e Chaves (Segurança)
+.env
+.env.*
+!*.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+
+# Firebase e Web (Opcional, mas muito comum)
+/firebase.json
+/.firebase/
+/build/web/
