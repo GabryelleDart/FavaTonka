@@ -1,0 +1,286 @@
+{
+  "notas": {
+    "blood_orange": {
+      "nome": "Laranja-sangue",
+      "emoji": "🍊",
+      "cor1": "#E4572E",
+      "cor2": "#8E1B10"
+    },
+    "mandarin": {
+      "nome": "Tangerina",
+      "emoji": "🍊",
+      "cor1": "#FFB347",
+      "cor2": "#F57C00"
+    },
+    "lemon": {
+      "nome": "Limão",
+      "emoji": "🍋",
+      "cor1": "#FFF176",
+      "cor2": "#F9A825"
+    },
+    "bergamot": {
+      "nome": "Bergamota",
+      "emoji": "🍋",
+      "cor1": "#C5E1A5",
+      "cor2": "#7CB342"
+    },
+    "pink_pepper": {
+      "nome": "Pimenta-rosa",
+      "emoji": "🌶️",
+      "cor1": "#F48FB1",
+      "cor2": "#C2185B"
+    },
+    "almond": {
+      "nome": "Amêndoa",
+      "emoji": "🌰",
+      "cor1": "#E0C39A",
+      "cor2": "#A1724A"
+    },
+    "coffee": {
+      "nome": "Café",
+      "emoji": "☕",
+      "cor1": "#8D6E63",
+      "cor2": "#3E2723"
+    },
+    "pear": {
+      "nome": "Pera",
+      "emoji": "🍐",
+      "cor1": "#DCE775",
+      "cor2": "#9E9D24"
+    },
+    "melon": {
+      "nome": "Melão",
+      "emoji": "🍈",
+      "cor1": "#C8E6C9",
+      "cor2": "#66BB6A"
+    },
+    "peach": {
+      "nome": "Pêssego",
+      "emoji": "🍑",
+      "cor1": "#FFCCBC",
+      "cor2": "#FF8A65"
+    },
+    "plum": {
+      "nome": "Ameixa",
+      "emoji": "🍇",
+      "cor1": "#B39DDB",
+      "cor2": "#5E35B1"
+    },
+    "blackberry": {
+      "nome": "Amora",
+      "emoji": "🍇",
+      "cor1": "#7E57C2",
+      "cor2": "#311B5C"
+    },
+    "magnolia": {
+      "nome": "Magnólia",
+      "emoji": "🌸",
+      "cor1": "#F8BBD0",
+      "cor2": "#EC8FB0"
+    },
+    "gardenia": {
+      "nome": "Gardênia",
+      "emoji": "🌼",
+      "cor1": "#FFF8E1",
+      "cor2": "#E6C98F"
+    },
+    "orange_blossom": {
+      "nome": "Flor de laranjeira",
+      "emoji": "🌼",
+      "cor1": "#FFFDE7",
+      "cor2": "#FFCC80"
+    },
+    "jasmine": {
+      "nome": "Jasmim",
+      "emoji": "🌼",
+      "cor1": "#FFFFFF",
+      "cor2": "#D7CCC8"
+    },
+    "jasmine_sambac": {
+      "nome": "Jasmim sambac",
+      "emoji": "🌼",
+      "cor1": "#FFFFFF",
+      "cor2": "#CFD8DC"
+    },
+    "rose": {
+      "nome": "Rosa",
+      "emoji": "🌹",
+      "cor1": "#F06292",
+      "cor2": "#AD1457"
+    },
+    "tuberose": {
+      "nome": "Tuberosa",
+      "emoji": "🌷",
+      "cor1": "#F3E5F5",
+      "cor2": "#BA68C8"
+    },
+    "iris": {
+      "nome": "Íris",
+      "emoji": "🌷",
+      "cor1": "#B39DDB",
+      "cor2": "#7E57C2"
+    },
+    "lily_valley": {
+      "nome": "Lírio-do-vale",
+      "emoji": "🌿",
+      "cor1": "#E8F5E9",
+      "cor2": "#81C784"
+    },
+    "freesia": {
+      "nome": "Frésia",
+      "emoji": "🌺",
+      "cor1": "#FFE0B2",
+      "cor2": "#FFA726"
+    },
+    "orchid": {
+      "nome": "Orquídea",
+      "emoji": "🌺",
+      "cor1": "#E1BEE7",
+      "cor2": "#AB47BC"
+    },
+    "violet": {
+      "nome": "Violeta",
+      "emoji": "🌸",
+      "cor1": "#CE93D8",
+      "cor2": "#7B1FA2"
+    },
+    "white_flowers": {
+      "nome": "Flores brancas",
+      "emoji": "🌸",
+      "cor1": "#FFFFFF",
+      "cor2": "#F0E6DD"
+    },
+    "passionflower": {
+      "nome": "Flor do maracujá",
+      "emoji": "🌺",
+      "cor1": "#FFE082",
+      "cor2": "#8E24AA"
+    },
+    "dewdrop": {
+      "nome": "Gotas de orvalho",
+      "emoji": "💧",
+      "cor1": "#E1F5FE",
+      "cor2": "#4FC3F7"
+    },
+    "ylang": {
+      "nome": "Ilangue-ilangue",
+      "emoji": "🌼",
+      "cor1": "#FFF59D",
+      "cor2": "#FBC02D"
+    },
+    "neroli": {
+      "nome": "Neroli",
+      "emoji": "🌼",
+      "cor1": "#FFF3E0",
+      "cor2": "#FFB74D"
+    },
+    "aldehydes": {
+      "nome": "Aldeídos",
+      "emoji": "✨",
+      "cor1": "#ECEFF1",
+      "cor2": "#90A4AE"
+    },
+    "honey": {
+      "nome": "Mel",
+      "emoji": "🍯",
+      "cor1": "#FFD54F",
+      "cor2": "#FF8F00"
+    },
+    "caramel": {
+      "nome": "Caramelo",
+      "emoji": "🍮",
+      "cor1": "#E0A458",
+      "cor2": "#8D5A1B"
+    },
+    "beeswax": {
+      "nome": "Cera de abelha",
+      "emoji": "🐝",
+      "cor1": "#FFE082",
+      "cor2": "#B8860B"
+    },
+    "licorice": {
+      "nome": "Alcaçuz",
+      "emoji": "🍬",
+      "cor1": "#5D4037",
+      "cor2": "#212121"
+    },
+    "sugar": {
+      "nome": "Açúcar",
+      "emoji": "🍬",
+      "cor1": "#FFFFFF",
+      "cor2": "#F8BBD0"
+    },
+    "milk": {
+      "nome": "Leite",
+      "emoji": "🥛",
+      "cor1": "#FFFFFF",
+      "cor2": "#CFD8DC"
+    },
+    "cacao": {
+      "nome": "Cacau",
+      "emoji": "🍫",
+      "cor1": "#8D5B3C",
+      "cor2": "#3E2117"
+    },
+    "praline": {
+      "nome": "Pralinê",
+      "emoji": "🥜",
+      "cor1": "#D7A86E",
+      "cor2": "#8A5A2B"
+    },
+    "vanilla": {
+      "nome": "Baunilha",
+      "emoji": "🍨",
+      "cor1": "#FFF3C4",
+      "cor2": "#E8C36A"
+    },
+    "tonka": {
+      "nome": "Fava-tonka",
+      "emoji": "🌰",
+      "cor1": "#A1887F",
+      "cor2": "#4E342E"
+    },
+    "patchouli": {
+      "nome": "Patchouli",
+      "emoji": "🍃",
+      "cor1": "#8D9E6B",
+      "cor2": "#3F5230"
+    },
+    "sandalwood": {
+      "nome": "Sândalo",
+      "emoji": "🌳",
+      "cor1": "#DDB892",
+      "cor2": "#8B5E3C"
+    },
+    "vetiver": {
+      "nome": "Vetiver",
+      "emoji": "🌾",
+      "cor1": "#A5B36B",
+      "cor2": "#5A6B2F"
+    },
+    "cedar": {
+      "nome": "Cedro",
+      "emoji": "🌲",
+      "cor1": "#A1887F",
+      "cor2": "#5D4037"
+    },
+    "amber": {
+      "nome": "Âmbar",
+      "emoji": "🔶",
+      "cor1": "#FFB300",
+      "cor2": "#B36B00"
+    },
+    "amberwood": {
+      "nome": "Madeira âmbar",
+      "emoji": "🌳",
+      "cor1": "#E0A458",
+      "cor2": "#8A5A2B"
+    },
+    "musk": {
+      "nome": "Almíscar",
+      "emoji": "☁️",
+      "cor1": "#F5F5F5",
+      "cor2": "#B0BEC5"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "comentarios": [
+    { "id": 1, "perfumeId": 1, "nome": "Ana Tonka", "email": "fava@tonka.com", "data": "2026-09-20T14:30:00", "texto": "Doce sem enjoar. O caramelo com laranja é viciante!" },
+    { "id": 2, "perfumeId": 1, "nome": "Carlos Âmbar", "email": "carlos@tonka.com", "data": "2026-09-22T09:10:00", "texto": "Fixação ótima, dura o dia todo." },
+    { "id": 3, "perfumeId": 2, "nome": "Carlos Âmbar", "email": "carlos@tonka.com", "data": "2026-09-18T19:45:00", "texto": "Cacau e tonka no fundo são o ponto alto." },
+    { "id": 4, "perfumeId": 3, "nome": "Ana Tonka", "email": "fava@tonka.com", "data": "2026-09-15T11:00:00", "texto": "Clássico que nunca sai de moda." },
+    { "id": 5, "perfumeId": 4, "nome": "Carlos Âmbar", "email": "carlos@tonka.com", "data": "2026-09-19T16:20:00", "texto": "Floral frutado elegante, perfeito para o dia." },
+    { "id": 6, "perfumeId": 5, "nome": "Ana Tonka", "email": "fava@tonka.com", "data": "2026-09-25T08:05:00", "texto": "Manhã de flores com um toque de chocolate. Adorei." },
+    { "id": 7, "perfumeId": 8, "nome": "Carlos Âmbar", "email": "carlos@tonka.com", "data": "2026-09-26T21:30:00", "texto": "Cheirinho de leite com caramelo, muito confortável." }
+  ]
+}
