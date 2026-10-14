@@ -1,24 +1,21 @@
 <p align="center">
-  <img src="docs/logo-favatonka.png" alt="FavaTonka - Descubra o perfume pelas suas notas" width="100%">
-</p>
-
-<p align="center">
-  Aplicativo <b>Flutter/Dart</b> de descoberta olfativa: dez perfumes, cada um com descrição e <b>pirâmide olfativa</b>
+  <img width="100%"  alt="FavaTonka - Descubra perfumes pelas suas notas" src="https://github.com/user-attachments/assets/c66745c2-959f-432b-9313-3506b1dc2975" />
+  
+<p>
+Aplicativo <b>Flutter/Dart</b> de descoberta olfativa: dez perfumes, cada um com descrição e <b>pirâmide olfativa</b>
   (notas de topo, coração e fundo) em círculos ilustrados, busca em tempo real, filtro por família olfativa,
   tema claro e escuro, login simulado, favoritos e comentários.
 </p>
 
 Trabalho da **Avaliação I (Front-end)** da disciplina **Programação Móvel** do
-IFBA, Campus de Vitória da Conquista. Professor: Luis Paulo da Silva Carvalho.
+IFBA, Campus de Vitória da Conquista. 
+**Professor:** Luis Paulo da Silva Carvalho.
 
 ---
 
 ## 1. Proposta
 
-O **FavaTonka** é como um **catálogo de perfumes** cuja intenção é **entender as notas dos perfumes**.
-O foco é a **descoberta olfativa**, e não propriamente uma venda: não há preços, carrinho nem compra.
-Em cada perfume, o usuário vê o que se sente na saída (topo), no meio (coração) e no que permanece na
-pele (fundo). Tocando em uma nota, descobre em quais outros perfumes da vitrine ela aparece.
+O **FavaTonka** nasce como um guia  para a exploração olfativa, um espaço dedicado à pura apreciação e ao entendimento das fragrâncias, livre de foco comercial, preços ou carrinhos.Em cada perfume, o usuário vê o que se sente na saída (topo), no meio (coração) e no que permanece na pele (fundo). Tocando em uma nota, descobre em quais outros perfumes da vitrine ela aparece.
 
 ### Perfumes da vitrine
 
@@ -28,16 +25,15 @@ pele (fundo). Tocando em uma nota, descobre em quais outros perfumes da vitrine 
 | 2 | Good Girl | Carolina Herrera | 2016 | Oriental · Floral |
 | 3 | Nº 5 | Chanel | 1921 | Floral · Aldeídico |
 | 4 | J'adore | Dior | 1999 | Floral · Frutal |
-| 5 | Sabah Al Ward | Al Wataniah | — | Floral · Âmbar · Gourmand |
+| 5 | Sabah Al Ward | Al Wataniah | 2023 | Floral · Âmbar · Gourmand |
 | 6 | Lily Absolu | O Boticário | 2020 | Floral · Doce |
-| 7 | Atheri | — | — | Floral |
+| 7 | Atheri | Lattafa  | 2025 | Floral |
 | 8 | Eclaire | Lattafa | 2024 | Gourmand · Floral · Frutal |
-| 9 | India Misteriosa | Mahogany | — | Floral · Oriental · Amadeirado |
+| 9 | India Misteriosa | Mahogany | 2010 | Floral · Oriental · Amadeirado |
 | 10 | Her Confession | Lattafa | 2024 | Âmbar · Gourmand · Floral |
 
 A classificação segue as famílias olfativas do Fragrantica, agrupadas nas oito categorias do FavaTonka:
-**Aldeídico, Amadeirado, Doce, Floral, Frutal, Gourmand, Oriental e Âmbar**. O traço (—) indica dado
-não informado.
+**Aldeídico, Amadeirado, Doce, Floral, Frutal, Gourmand, Oriental e Âmbar**.
 
 ## 2. Funcionalidades
 
@@ -54,8 +50,7 @@ não informado.
 | Favoritar e ver a tela de favoritos | ❌ | ✅ |
 | Comentar e apagar os próprios comentários | ❌ | ✅ |
 
-Extras: layout responsivo (celular, tablet, desktop e web), arrastar listas com o mouse
-no desktop, puxar para atualizar, estados de carregamento e de erro.
+
 
 ## 3. Telas
 
@@ -77,19 +72,14 @@ Tela inicial, com a lista dos perfumes.
 - **Outros estados:** puxar para atualizar, "Nenhum perfume encontrado." e, se os dados não carregarem,
   "Não foi possível carregar os perfumes." com o botão "Tentar novamente".
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/prints/catalogo-claro.png" width="220" alt="Catálogo no tema claro"><br><sub>Tema claro</sub></td>
-    <td align="center"><img src="docs/prints/catalogo-escuro.png" width="220" alt="Catálogo no tema escuro"><br><sub>Tema escuro</sub></td>
-    <td align="center"><img src="docs/prints/catalogo-busca.png" width="220" alt="Catálogo com busca"><br><sub>Busca em tempo real</sub></td>
-    <td align="center"><img src="docs/prints/catalogo-filtro.png" width="220" alt="Catálogo com filtro"><br><sub>Filtro por família</sub></td>
-  </tr>
-</table>
 
-<p align="center">
-  <img src="docs/prints/catalogo-desktop.png" width="640" alt="Catálogo no desktop"><br>
-  <sub>Catálogo no desktop (várias colunas)</sub>
-</p>
+<img width="1917" height="910" alt="Captura de tela 2026-10-14 185721" src="https://github.com/user-attachments/assets/7d574bde-2c4e-4563-9fb2-8a6db9a7a477" />
+
+<img width="1917" height="906" alt="Captura de tela 2026-10-14 185738" src="https://github.com/user-attachments/assets/e9baea17-91c1-4472-be43-fc815305cc9d" />
+
+<img width="1917" height="907" alt="Captura de tela 2026-10-14 185755" src="https://github.com/user-attachments/assets/82013f7c-724f-41e5-a30b-e2dfbfc0fcd6" />
+
+<img width="1917" height="910" alt="Captura de tela 2026-10-14 185810" src="https://github.com/user-attachments/assets/d6c381fa-c795-4a27-a872-de2b8b07b653" />
 
 ### 3.2 Detalhes (`lib/telas/detalhes.dart`)
 
@@ -97,7 +87,7 @@ Abre ao tocar em um perfume.
 
 - **Barra superior:** voltar, logotipo, favoritar e compartilhar. Sem login, o coração avisa
   "Entre para favoritar perfumes" com a ação ENTRAR.
-- **Perfume:** foto grande, nome, "marca · ano · gênero", chips com a classificação e a descrição.
+- **Perfume:** foto grande, nome, "marca · ano · gênero", tags com a classificação e a descrição.
 - **Pirâmide olfativa:** topo (primeiros minutos), coração (algumas horas) e fundo (o que fica na pele),
   com cada nota num círculo com emoji e nome.
 - **Janela da nota:** ao tocar numa nota, abre uma janela com o círculo grande, o nome e a lista
@@ -108,23 +98,12 @@ Abre ao tocar em um perfume.
   com a confirmação "Deseja apagar o comentário?". Sem comentários: "Ainda não há comentários.".
 - **Desktop (a partir de 900 px):** foto à esquerda e conteúdo à direita.
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/prints/detalhes-claro.png" width="220" alt="Detalhes no tema claro"><br><sub>Tema claro</sub></td>
-    <td align="center"><img src="docs/prints/detalhes-piramide.png" width="220" alt="Pirâmide olfativa"><br><sub>Pirâmide olfativa</sub></td>
-    <td align="center"><img src="docs/prints/detalhes-escuro.png" width="220" alt="Detalhes no tema escuro"><br><sub>Tema escuro</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/prints/detalhes-nota.png" width="220" alt="Janela de uma nota"><br><sub>Janela da nota</sub></td>
-    <td align="center"><img src="docs/prints/detalhes-comentarios.png" width="220" alt="Comentários"><br><sub>Comentários</sub></td>
-    <td></td>
-  </tr>
-</table>
+<img width="1917" height="903" alt="Captura de tela 2026-10-14 190122" src="https://github.com/user-attachments/assets/3eb188d6-b514-471d-a845-290528833b37" />
 
-<p align="center">
-  <img src="docs/prints/detalhes-desktop.png" width="640" alt="Detalhes no desktop"><br>
-  <sub>Detalhes no desktop (duas colunas)</sub>
-</p>
+<img width="1917" height="898" alt="Captura de tela 2026-10-14 190144" src="https://github.com/user-attachments/assets/189c9d50-eaaf-4fa5-a604-ecbc2d54c132" />
+
+<img width="1917" height="906" alt="Captura de tela 2026-10-14 190635" src="https://github.com/user-attachments/assets/8ab38558-0914-483e-80aa-06484eb0c91b" />
+
 
 ### 3.3 Login (`lib/telas/login.dart`)
 
@@ -135,12 +114,10 @@ Abre ao tocar em um perfume.
 - **Continuar sem entrar** fecha a tela e mantém o modo sem login.
 - Para sair, use o botão de sair da barra do catálogo ("Você foi desconectado com sucesso").
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/prints/login.png" width="220" alt="Tela de login"><br><sub>Login</sub></td>
-    <td align="center"><img src="docs/prints/login-erro.png" width="220" alt="Login com erro"><br><sub>Credenciais inválidas</sub></td>
-  </tr>
-</table>
+<img width="1917" height="906" alt="Captura de tela 2026-10-14 190254" src="https://github.com/user-attachments/assets/3daf38b2-8aa5-4190-a3c2-c1c54281b682" />
+
+<img width="1917" height="913" alt="Captura de tela 2026-10-14 190358" src="https://github.com/user-attachments/assets/5e89741f-2e07-4594-a9c6-28212a084315" />
+
 
 ### 3.4 Favoritos (`lib/telas/favoritos.dart`)
 
@@ -150,13 +127,9 @@ Exige login. Se você não estiver logado, o botão de favoritos avisa e leva à
 - O coração vermelho remove o perfume ("NOME removido dos favoritos"). Tocar no item abre os detalhes.
 - Lista vazia: "Você ainda não favoritou nenhum perfume. Toque no coração na tela de detalhes.".
 - Os favoritos são zerados ao sair da conta.
+  
+<img width="1917" height="902" alt="Captura de tela 2026-10-14 190451" src="https://github.com/user-attachments/assets/ae23f950-7fe8-4219-a865-c7315c57c288" />
 
-<table>
-  <tr>
-    <td align="center"><img src="docs/prints/favoritos.png" width="220" alt="Lista de favoritos"><br><sub>Favoritos</sub></td>
-    <td align="center"><img src="docs/prints/favoritos-vazio.png" width="220" alt="Favoritos vazio"><br><sub>Lista vazia</sub></td>
-  </tr>
-</table>
 
 ## 4. Atendimento ao descritivo da avaliação
 
@@ -164,7 +137,7 @@ Exige login. Se você não estiver logado, o botão de favoritos avisa e leva à
 |---|---|
 | 7. Dart e Flutter | Todo o código em Dart, com Flutter. |
 | 11. Duas ou mais telas, uma com lista | 4 telas; o catálogo e os favoritos são listas. |
-| 12. Login e logoff, com modo sem login | Botão de entrar/sair no topo do catálogo. Sem login, o app é navegável; favoritar e comentar exigem login. |
+| 12. Login e logoff, com modo sem login | Botão de entrar/sair no topo do catálogo. Sem login, o app é navegável; Favoritar e comentar exigem login. |
 | 13. Login mockado | Usuários fixos no código, em `lib/autenticador.dart`. |
 | 14. Dados em JSON estáticos | `recursos/jsons/perfumes.json`, `notas.json` e `comentarios.json`. |
 | 15. Entrega em plataforma Git | Repositório no GitHub; o link vai pelo Classroom no dia da entrega. |
@@ -183,9 +156,6 @@ Exige login. Se você não estiver logado, o botão de favoritos avisa e leva à
 ## 6. Estrutura do projeto
 
 ```
-docs/
-  logo-favatonka.png           banner do topo deste README
-  prints/                      prints das telas usados neste README
 lib/
   main.dart                    ponto de entrada e configuração dos temas
   tema.dart                    paleta clara/escura, fontes e utilitários
@@ -205,76 +175,238 @@ android/ ios/ web/ windows/ linux/ macos/   pastas de cada plataforma (geradas p
 
 ## 7. Como executar
 
-### 7.1 Pré-requisitos
+O FavaTonka pode ser executado de **três formas**: no emulador do Android Studio (7.3), no celular por
+cabo USB, Android ou iPhone (7.4), ou no Chrome (7.5). Antes, siga os passos de 7.1 e 7.2.
 
-1. Instale o **Flutter** (https://docs.flutter.dev/get-started/install) e confira com:
-   ```bash
-   flutter --version      # precisa ser 3.47 ou superior
-   flutter doctor -v
-   ```
-2. Instale o que o `flutter doctor` pedir para a plataforma que você quer usar:
+### 7.1 Antes de começar
 
-| Plataforma | O que precisa | Roda em |
-|---|---|---|
-| Android | Android Studio, Android SDK, licenças aceitas, emulador ou celular | Windows, Linux, macOS |
-| Web | Google Chrome ou Edge | qualquer sistema |
-| Windows | Visual Studio com "Desenvolvimento para desktop com C++" e **Modo de Desenvolvedor** ativado | Windows |
-| Linux | `sudo apt install clang cmake ninja-build pkg-config libgtk-3-dev` | Linux |
-| macOS / iOS | Xcode e CocoaPods | **somente macOS** |
-
-### 7.2 Baixar e preparar
+Instale o **Flutter** (https://docs.flutter.dev/get-started/install) e o **Git**. Depois, no terminal:
 
 ```bash
-git clone <URL-DO-REPOSITORIO>
+flutter --version
+flutter doctor -v
+```
+
+| Comando | Para que serve |
+|---|---|
+| `flutter --version` | Mostra a versão instalada. O projeto precisa do Flutter 3.47 ou superior. Se for mais antigo, rode `flutter upgrade`. |
+| `flutter doctor -v` | Faz um diagnóstico da instalação e lista o que falta (Android SDK, Chrome, Xcode...). Resolva o que aparecer com `[!]` ou `[✗]` na plataforma que você vai usar. |
+
+### 7.2 Baixar o projeto
+
+Há dois repositórios. Use o **completo** se puder. Use o **enxuto** se for o que está no GitHub.
+
+**Repositório completo** (inclui as pastas de plataforma, como `android/`, `ios/` e `web/`):
+
+```bash
+git clone <URL-DO-REPOSITORIO-COMPLETO>
 cd FavaTonka
 flutter pub get
 ```
 
-Se, por algum motivo, as pastas de plataforma (`android`, `ios`, `web`...) não vierem no repositório,
-recrie-as com `flutter create --project-name favatonka .` antes do `flutter pub get`.
+| Comando | Para que serve |
+|---|---|
+| `git clone <URL>` | Copia o repositório para o seu computador. |
+| `cd FavaTonka` | Entra na pasta do projeto. Todos os comandos seguintes são rodados dentro dela. |
+| `flutter pub get` | Baixa as bibliotecas que o app usa (`provider`, `share_plus`, `intl`...), listadas no `pubspec.yaml`. |
 
-### 7.3 Rodar
+**Repositório enxuto** (só o código, os recursos e o `pubspec.yaml`, sem as pastas de plataforma):
 
-Veja os dispositivos disponíveis com `flutter devices` e rode com `flutter run -d <id>`.
-
-**Navegador (o jeito mais rápido, não precisa de emulador):**
 ```bash
+git clone <URL-DO-REPOSITORIO-ENXUTO>
+cd FavaTonka
+flutter create --project-name favatonka .
+flutter pub get
+```
+
+| Comando | Para que serve |
+|---|---|
+| `flutter create --project-name favatonka .` | **Gera as pastas de plataforma que faltam** (`android`, `ios`, `web`, `windows`, `linux`, `macos`). O ponto no final significa "nesta pasta". Não apaga nem altera `lib/`, `recursos/` nem o `pubspec.yaml`. O `--project-name favatonka` garante o nome do pacote que o código usa nos imports. |
+| `flutter pub get` | Baixa as bibliotecas, como no repositório completo. |
+
+> No repositório enxuto o app funciona igual, mas abre com o **ícone padrão do Flutter** e o nome
+> "favatonka" no Android, porque o ícone e o nome personalizados ficam dentro das pastas de plataforma
+> do repositório completo. Para gerar só uma plataforma, use `--platforms`, por exemplo
+> `flutter create --project-name favatonka --platforms=android,web .`
+
+### 7.3 Alternativa 1: emulador do Android Studio
+
+Funciona em Windows, Linux e macOS.
+
+**Preparação (uma vez só):**
+
+1. Instale o **Android Studio**. Em *More Actions → SDK Manager → SDK Tools*, marque
+   **Android SDK Command-line Tools**, **Android SDK Platform-Tools** e **Android Emulator**.
+2. Ative a **virtualização** do computador:
+   - **Windows:** ative VT-x ou AMD-V (SVM) na BIOS e, em "Ativar ou desativar recursos do Windows",
+     a **Plataforma do Hipervisor do Windows**. Reinicie.
+   - **Linux:** instale e libere o KVM, depois saia e entre na sessão de novo:
+```bash
+     sudo apt install qemu-kvm
+     sudo adduser $USER kvm
+```
+3. Crie o emulador: *More Actions → Virtual Device Manager → Create Device*, escolha **Pixel 7**,
+   uma imagem do sistema (por exemplo, API 34, x86_64) e clique em *Finish*.
+
+**Rodar:**
+
+```bash
+flutter doctor --android-licenses
+flutter emulators
+flutter emulators --launch Pixel_7
+flutter devices
+flutter run
+```
+
+| Comando | Para que serve |
+|---|---|
+| `flutter doctor --android-licenses` | Aceite as licenças do Android SDK (digite `y` em cada pergunta). Sem isso, o build do Android falha. |
+| `flutter emulators` | Lista os emuladores criados e o id de cada um. |
+| `flutter emulators --launch Pixel_7` | Abre o emulador. Troque `Pixel_7` pelo id mostrado no comando anterior. Espere ele carregar a tela inicial. |
+| `flutter devices` | Confirma que o emulador aparece como dispositivo (algo como `emulator-5554`). |
+| `flutter run` | Compila o app, instala no emulador e abre. Se houver mais de um dispositivo, use `flutter run -d emulator-5554`. |
+
+Se o Flutter não achar o SDK, informe o caminho: `flutter config --android-sdk "<CAMINHO-DO-SDK>"`.
+No Windows, ele costuma ficar em `C:\Users\<usuário>\AppData\Local\Android\Sdk`.
+
+### 7.4 Alternativa 2: celular por cabo USB
+
+#### Android (Windows, Linux ou macOS)
+
+1. No celular: *Configurações → Sobre o telefone* e toque 7 vezes em **Número da versão**. Depois, em
+   *Opções do desenvolvedor*, ative a **Depuração USB**.
+2. Conecte o cabo (precisa ser de dados, e não só de carga) e, no celular, escolha o modo
+   **Transferência de arquivos**. Aceite a janela "Permitir depuração USB?".
+3. **Driver, se o celular não aparecer:**
+   - **Windows:** instale o driver do fabricante (Samsung, Motorola, Xiaomi...) ou, no Android Studio,
+     *SDK Manager → SDK Tools → Google USB Driver*.
+   - **Linux:** libere o acesso ao USB e depois saia e entre na sessão de novo:
+```bash
+     sudo apt install android-sdk-platform-tools-common
+     sudo usermod -aG plugdev $USER
+```
+   - **macOS:** não precisa de driver.
+
+```bash
+adb devices
+flutter devices
+flutter run
+```
+
+| Comando | Para que serve |
+|---|---|
+| `adb devices` | Lista os aparelhos vistos pelo Android. O seu deve aparecer com `device`. Se aparecer `unauthorized`, aceite a janela no celular. Se aparecer `no permissions` (Linux), refaça a parte do `plugdev`. |
+| `flutter devices` | Confirma que o Flutter enxerga o celular. |
+| `flutter run` | Compila, instala e abre o app no celular. Com mais de um dispositivo, use `flutter run -d <id>`. |
+
+Se o `adb` não for reconhecido, adicione ao PATH a pasta `platform-tools` do Android SDK. Se o celular
+não aparecer, reinicie o serviço com `adb kill-server` e depois `adb start-server`.
+
+#### iPhone
+
+> **Só funciona em um Mac com Xcode.** Windows e Linux não conseguem compilar para iPhone; nesses
+> sistemas, use o celular Android (acima), o emulador (7.3) ou o Chrome (7.5).
+
+1. Instale o **Xcode** pela App Store e prepare-o:
+```bash
+   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+   sudo xcodebuild -runFirstLaunch
+   sudo gem install cocoapods
+```
+2. No iPhone, ative o **Modo Desenvolvedor** (*Ajustes → Privacidade e Segurança → Modo Desenvolvedor*)
+   e reinicie o aparelho. Conecte o cabo e toque em **Confiar neste computador**.
+3. Abra o projeto no Xcode, escolha seu Apple ID e troque o identificador do app por um único:
+```bash
+   open ios/Runner.xcworkspace
+```
+   Em *Runner → Signing & Capabilities*, escolha o **Team** (um Apple ID gratuito serve) e mude o
+   **Bundle Identifier** (por exemplo, `br.edu.ifba.favatonka.seunome`).
+4. Rode:
+```bash
+   flutter devices
+   flutter run
+```
+5. Na primeira vez, o iPhone pode bloquear o app. Vá em *Ajustes → Geral → VPN e Gerenciamento de
+   Dispositivo*, toque no seu Apple ID e escolha **Confiar**.
+
+| Comando | Para que serve |
+|---|---|
+| `sudo xcode-select --switch ...` | Diz ao sistema qual Xcode usar. |
+| `sudo xcodebuild -runFirstLaunch` | Conclui a instalação dos componentes do Xcode. |
+| `sudo gem install cocoapods` | Instala o CocoaPods, que baixa as bibliotecas nativas do iPhone. |
+| `open ios/Runner.xcworkspace` | Abre a parte iOS do projeto no Xcode, para configurar a assinatura. |
+| `flutter devices` | Confirma que o iPhone aparece. |
+| `flutter run` | Compila e instala no iPhone. Se der erro de CocoaPods, rode `cd ios && pod install && cd ..` e tente de novo. |
+
+Com Apple ID gratuito, o app instalado deixa de abrir após cerca de 7 dias; basta rodar `flutter run` de novo.
+
+### 7.5 Alternativa 3: Chrome
+
+Funciona em Windows, Linux e macOS, sem emulador nem cabo. Instale o **Google Chrome** e rode:
+
+```bash
+flutter config --enable-web
+flutter devices
 flutter run -d chrome
 ```
 
-**Windows (desktop):**
-```bash
-flutter run -d windows
-```
+| Comando | Para que serve |
+|---|---|
+| `flutter config --enable-web` | Liga o suporte a web do Flutter (em geral já vem ligado). |
+| `flutter devices` | Deve listar **Chrome (web)**. |
+| `flutter run -d chrome` | Compila o app para a web e abre numa janela do Chrome. |
 
-**Emulador Android:**
-```bash
-flutter emulators                       # lista os emuladores
-flutter emulators --launch <id>         # abre um
-flutter run
-```
+Com o app rodando no terminal: `r` recarrega o código, `R` reinicia o app e `q` encerra. Dá para
+redimensionar a janela do Chrome para ver o layout mudar de celular para desktop.
 
-**Celular Android com cabo USB:** ative as *Opções do desenvolvedor* e a *Depuração USB*,
-conecte o cabo, aceite a autorização no celular, confira com `adb devices` e rode `flutter run`.
-
-**iPhone / simulador iOS (somente macOS):**
-```bash
-cd ios && pod install && cd ..
-open -a Simulator
-flutter run
-```
-
-**Linux ou macOS (desktop):** `flutter run -d linux` ou `flutter run -d macos`.
-
-### 7.4 Gerar o aplicativo instalável (opcional)
+Se o Chrome não for encontrado, informe o caminho dele:
 
 ```bash
-flutter build apk --release        # Android: build/app/outputs/flutter-apk/app-release.apk
-flutter build web                  # Web: pasta build/web
-flutter build windows              # Windows: build/windows/x64/runner/Release
+# Windows (PowerShell)
+$env:CHROME_EXECUTABLE="C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+# Linux
+export CHROME_EXECUTABLE=/usr/bin/google-chrome
 ```
 
-### 7.5 Credenciais de teste
+### 7.6 Se o Android der erro: apagar e recriar a pasta `android`
+
+Erros de Gradle, plugin não encontrado ou diferença de versões (comuns depois de atualizar o Flutter)
+costumam se resolver recriando a pasta `android`:
+
+1. Pare o app e apague a pasta `android`:
+```bash
+   # Windows (PowerShell)
+   Remove-Item -Recurse -Force android
+
+   # Linux e macOS
+   rm -rf android
+```
+2. Recrie só o Android com os arquivos da versão atual do Flutter:
+```bash
+   flutter create --platforms=android .
+```
+   Se o Flutter reclamar do nome do projeto, use `flutter create --project-name favatonka --platforms=android .`
+3. Limpe e rode de novo:
+```bash
+   flutter clean
+   flutter pub get
+   flutter run
+```
+
+| Comando | Para que serve |
+|---|---|
+| `Remove-Item -Recurse -Force android` / `rm -rf android` | Apaga a pasta `android` com a configuração que deu erro. |
+| `flutter create --platforms=android .` | Recria **apenas** a pasta `android`. Não mexe em `lib/`, `recursos/` nem no `pubspec.yaml`. |
+| `flutter clean` | Apaga os arquivos de build antigos. |
+| `flutter pub get` | Baixa as bibliotecas de novo. |
+| `flutter run` | Compila e abre o app. |
+
+> Ao recriar, o **ícone** e o **nome** personalizados do Android voltam ao padrão. Para recuperá-los,
+> copie as pastas `android/app/src/main/res/mipmap-*` do repositório completo e troque
+> `android:label="favatonka"` por `android:label="FavaTonka"` em `android/app/src/main/AndroidManifest.xml`.
+
+### 7.7 Credenciais de teste
 
 | E-mail | Senha | Nome |
 |---|---|---|
@@ -329,7 +461,6 @@ O Nº 5 é achado por `no 5`, `no5` ou `5`. As palavras "de", "da" e "do" são i
 - Favoritos, comentários novos e a escolha do tema ficam **só na memória** e se perdem
   ao fechar o app (os favoritos também são zerados ao sair da conta). Os dados vêm de JSON
   estáticos, como pede a avaliação.
-- Marca e ano não foram informados para alguns perfumes (Atheri, Sabah Al Ward e India Misteriosa).
 - O botão de compartilhar depende do sistema (no desktop e na web, o comportamento varia).
 - No Linux, o emoji só aparece colorido se houver uma fonte de emoji instalada.
 
