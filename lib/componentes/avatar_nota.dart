@@ -19,7 +19,8 @@ class AvatarNota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final anel = tamanho * 0.055;
+    final p = context.paleta;
+    final anel = tamanho * 0.05;
 
     final circulo = Container(
       width: tamanho,
@@ -30,11 +31,11 @@ class AvatarNota extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Cores.dourado, nota.cor2],
+          colors: [p.destaque, nota.cor2],
         ),
         boxShadow: [
           BoxShadow(
-            color: nota.cor2.withValues(alpha: 0.35),
+            color: nota.cor2.withValues(alpha: 0.30),
             blurRadius: tamanho * 0.16,
             offset: Offset(0, tamanho * 0.05),
           ),
@@ -56,22 +57,18 @@ class AvatarNota extends StatelessWidget {
 
     final conteudo = mostrarNome
         ? SizedBox(
-            width: tamanho + 20,
+            width: tamanho + 24,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 circulo,
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 Text(
                   nota.nome,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    height: 1.15,
-                    color: Cores.tinta,
-                  ),
+                  style: TextStyle(fontSize: 11.5, height: 1.25, color: p.texto),
                 ),
               ],
             ),
@@ -79,6 +76,9 @@ class AvatarNota extends StatelessWidget {
         : circulo;
 
     if (onTap == null) return conteudo;
-    return GestureDetector(onTap: onTap, child: conteudo);
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(onTap: onTap, child: conteudo),
+    );
   }
 }

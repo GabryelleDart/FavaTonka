@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:favatonka/modelos/comentario.dart';
 import 'package:favatonka/modelos/nota.dart';
 import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/usuario.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' show Brightness, ThemeMode;
 import 'package:flutter/services.dart';
 
 class GerenciadorEstado extends ChangeNotifier {
@@ -18,11 +18,19 @@ class GerenciadorEstado extends ChangeNotifier {
   Usuario? _usuario;
   final Set<int> _favoritos = {};
   int _proximoIdComentario = 1000;
+  ThemeMode _modoTema = ThemeMode.system;
 
   bool get carregando => _carregando;
   String? get erro => _erro;
   Usuario? get usuario => _usuario;
   bool get logado => _usuario != null;
+  ThemeMode get modoTema => _modoTema;
+
+  /// Alterna entre claro e escuro, partindo do tema que está na tela agora.
+  void alternarTema(Brightness atual) {
+    _modoTema = atual == Brightness.dark ? ThemeMode.light : ThemeMode.dark;
+    notifyListeners();
+  }
   List<Perfume> get perfumes => List.unmodifiable(_perfumes);
 
   List<String> get familias {
@@ -94,19 +102,31 @@ class GerenciadorEstado extends ChangeNotifier {
       _perfumes.where((p) => p.todasNotas.contains(chave)).toList();
 
   List<Perfume> perfumesFiltrados(String busca, String? familia) {
-    final termo = _normalizar(busca);
+    final termos = _palavras(busca);
 
     return _perfumes.where((p) {
       if (familia != null && !p.familias.contains(familia)) return false;
-      if (termo.isEmpty) return true;
+      if (termos.isEmpty) return true;
 
-      final alvo = [
-        p.nome,
-        p.marca,
-        ...p.todasNotas.map((k) => nota(k).nome),
-      ].map(_normalizar).join(' ');
-      return alvo.contains(termo);
+      final palavras = <String>[
+        ..._palavras(p.nome),
+        _normalizar(p.nome).replaceAll(RegExp(r'[^a-z0-9]'), ''),
+        ..._palavras(p.marca),
+        for (final k in p.todasNotas) ..._palavras(nota(k).nome),
+      ];
+
+      // Cada termo digitado precisa casar com alguma palavra do perfume.
+      return termos.every(
+        (t) => palavras.any((w) => t.length <= 3 ? w == t : w.startsWith(t)),
+      );
     }).toList();
+  }
+
+  static List<String> _palavras(String texto) {
+    return _normalizar(texto)
+        .split(RegExp(r'[^a-z0-9]+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
   }
 
   static String _normalizar(String texto) {

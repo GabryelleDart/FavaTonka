@@ -1,4 +1,5 @@
 import 'package:favatonka/autenticador.dart';
+import 'package:favatonka/componentes/logo.dart';
 import 'package:favatonka/gerenciador_estado.dart';
 import 'package:favatonka/tema.dart';
 import 'package:flutter/material.dart';
@@ -39,123 +40,124 @@ class _TelaLoginState extends State<TelaLogin> {
 
     if (usuario == null) {
       messenger.hideCurrentSnackBar();
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('E-mail ou senha inválidos'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      messenger.showSnackBar(const SnackBar(content: Text('E-mail ou senha inválidos')));
       return;
     }
 
     estado.login(usuario);
     navegador.pop();
     messenger.hideCurrentSnackBar();
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text('Bem-vinda(o), ${usuario.nome}!'),
-        behavior: SnackBarBehavior.floating,
-      ),
+    messenger.showSnackBar(SnackBar(content: Text('Bem-vinda(o), ${usuario.nome}!')));
+  }
+
+  InputDecoration _decoracao(String rotulo, IconData icone, {Widget? sufixo}) {
+    final p = context.paleta;
+    OutlineInputBorder borda(Color cor, [double largura = 1]) => OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: cor, width: largura),
+        );
+
+    return InputDecoration(
+      labelText: rotulo,
+      labelStyle: TextStyle(color: p.textoSuave),
+      prefixIcon: Icon(icone, color: p.textoSuave),
+      suffixIcon: sufixo,
+      border: borda(p.borda),
+      enabledBorder: borda(p.borda),
+      focusedBorder: borda(p.destaque, 1.4),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final p = context.paleta;
+
     return Scaffold(
       appBar: AppBar(),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
-          child: Form(
-            key: _chave,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 96,
-                  height: 96,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [Cores.dourado, Cores.vinho],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+          padding: const EdgeInsets.all(20),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(28, 36, 28, 24),
+              decoration: BoxDecoration(
+                color: p.superficie,
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(color: p.borda),
+              ),
+              child: Form(
+                key: _chave,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Logo(tamanho: 40),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Entre para favoritar e comentar',
+                      style: TextStyle(color: p.textoSuave, fontSize: 13),
                     ),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Text('🌰', style: TextStyle(fontSize: 44)),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'FavaTonka',
-                  style: TextStyle(
-                    fontFamily: fonteTitulo,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Cores.vinho,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Entre para favoritar e comentar',
-                  style: TextStyle(color: Colors.black54),
-                ),
-                const SizedBox(height: 28),
-                TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'E-mail',
-                    prefixIcon: Icon(Icons.mail_outline),
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) =>
-                      (v == null || !v.contains('@')) ? 'Informe um e-mail válido' : null,
-                ),
-                const SizedBox(height: 14),
-                TextFormField(
-                  controller: _senha,
-                  obscureText: _ocultarSenha,
-                  decoration: InputDecoration(
-                    labelText: 'Senha',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      onPressed: () => setState(() => _ocultarSenha = !_ocultarSenha),
-                      icon: Icon(
-                        _ocultarSenha ? Icons.visibility : Icons.visibility_off,
+                    const SizedBox(height: 28),
+                    TextFormField(
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(color: p.texto),
+                      decoration: _decoracao('E-mail', Icons.mail_outline),
+                      validator: (v) =>
+                          (v == null || !v.contains('@')) ? 'Informe um e-mail válido' : null,
+                    ),
+                    const SizedBox(height: 14),
+                    TextFormField(
+                      controller: _senha,
+                      obscureText: _ocultarSenha,
+                      style: TextStyle(color: p.texto),
+                      onFieldSubmitted: (_) => _entrar(),
+                      decoration: _decoracao(
+                        'Senha',
+                        Icons.lock_outline,
+                        sufixo: IconButton(
+                          onPressed: () => setState(() => _ocultarSenha = !_ocultarSenha),
+                          icon: Icon(
+                            _ocultarSenha ? Icons.visibility : Icons.visibility_off,
+                            color: p.textoSuave,
+                          ),
+                        ),
+                      ),
+                      validator: (v) => (v == null || v.isEmpty) ? 'Informe a senha' : null,
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        onPressed: _entrando ? null : _entrar,
+                        child: _entrando
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(strokeWidth: 2.5),
+                              )
+                            : const Text('Entrar'),
                       ),
                     ),
-                  ),
-                  validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Informe a senha' : null,
+                    const SizedBox(height: 6),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Continuar sem entrar', style: TextStyle(color: p.titulo)),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Demonstração: fava@tonka.com / 123456',
+                      style: TextStyle(fontSize: 12, color: p.textoSuave),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 22),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: FilledButton(
-                    onPressed: _entrando ? null : _entrar,
-                    child: _entrando
-                        ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(strokeWidth: 2.5),
-                          )
-                        : const Text('Entrar'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Continuar sem entrar'),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Demonstração: fava@tonka.com / 123456',
-                  style: TextStyle(fontSize: 12, color: Colors.black45),
-                ),
-              ],
+              ),
             ),
           ),
         ),

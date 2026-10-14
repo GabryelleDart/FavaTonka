@@ -7,6 +7,7 @@ import 'package:favatonka/telas/detalhes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Cartão no estilo vitrine: foto grande, texto enxuto embaixo.
 class CartaoPerfume extends StatelessWidget {
   final Perfume perfume;
   final String prefixoHero;
@@ -20,90 +21,93 @@ class CartaoPerfume extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final estado = context.watch<GerenciadorEstado>();
+    final p = context.paleta;
     final favorito = estado.ehFavorito(perfume.id);
-    final chaves = (perfume.coracao.isNotEmpty ? perfume.coracao : perfume.todasNotas)
-        .take(4)
-        .toList();
+    final todas = perfume.coracao.isNotEmpty ? perfume.coracao : perfume.todasNotas;
+    final chaves = todas.take(4).toList();
+    final restantes = perfume.todasNotas.length - chaves.length;
 
     return Material(
-      color: Colors.white,
-      elevation: 3,
-      shadowColor: Cores.vinho.withValues(alpha: 0.25),
-      borderRadius: BorderRadius.circular(20),
-      clipBehavior: Clip.antiAlias,
+      color: Colors.transparent,
       child: InkWell(
+        borderRadius: BorderRadius.circular(14),
         onTap: () => abrirDetalhes(context, perfume.id, '$prefixoHero-${perfume.id}'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Hero(
-                    tag: '$prefixoHero-${perfume.id}',
-                    child: FotoPerfume(perfume: perfume),
-                  ),
-                  if (favorito)
-                    const Positioned(
-                      top: 8,
-                      right: 8,
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.favorite, size: 18, color: Colors.red),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  color: p.superficie,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Hero(
+                        tag: '$prefixoHero-${perfume.id}',
+                        child: FotoPerfume(perfume: perfume),
                       ),
-                    ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    perfume.nome,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: fonteTitulo,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: Cores.vinho,
-                    ),
-                  ),
-                  if (perfume.marca.isNotEmpty)
-                    Text(
-                      perfume.marca,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: Colors.black54),
-                    ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 30,
-                    child: chaves.isEmpty
-                        ? const Text(
-                            'notas em breve',
-                            style: TextStyle(fontSize: 11, color: Colors.black38),
-                          )
-                        : Row(
-                            children: [
-                              for (final k in chaves)
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: AvatarNota(
-                                    nota: estado.nota(k),
-                                    tamanho: 28,
-                                  ),
-                                ),
-                            ],
+                      if (favorito)
+                        const Positioned(
+                          top: 8,
+                          right: 8,
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Colors.white,
+                            child: Icon(Icons.favorite, size: 16, color: Colors.red),
                           ),
+                        ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
+            const SizedBox(height: 10),
+            Text(
+              perfume.nome,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: fonteTitulo,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: p.titulo,
+              ),
+            ),
+            if (perfume.marca.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: Text(
+                  perfume.marca,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12, color: p.textoSuave),
+                ),
+              ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 26,
+              child: chaves.isEmpty
+                  ? Text(
+                      'notas em breve',
+                      style: TextStyle(fontSize: 11, color: p.textoSuave),
+                    )
+                  : Row(
+                      children: [
+                        for (final k in chaves)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: AvatarNota(nota: estado.nota(k), tamanho: 26),
+                          ),
+                        if (restantes > 0)
+                          Text(
+                            '+$restantes',
+                            style: TextStyle(fontSize: 11.5, color: p.textoSuave),
+                          ),
+                      ],
+                    ),
+            ),
+            const SizedBox(height: 4),
           ],
         ),
       ),

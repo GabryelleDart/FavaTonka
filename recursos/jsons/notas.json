@@ -163,7 +163,7 @@
       "cor2": "#4FC3F7"
     },
     "ylang": {
-      "nome": "Ilangue-ilangue",
+      "nome": "Ylang-ylang",
       "emoji": "🌼",
       "cor1": "#FFF59D",
       "cor2": "#FBC02D"
@@ -281,6 +281,72 @@
       "emoji": "☁️",
       "cor1": "#F5F5F5",
       "cor2": "#B0BEC5"
+    },
+    "white_frangipani": {
+      "nome": "Frangipani branco",
+      "emoji": "🌺",
+      "cor1": "#FFF8E1",
+      "cor2": "#F4B6C2"
+    },
+    "lily": {
+      "nome": "Lírio de Grasse",
+      "emoji": "🌸",
+      "cor1": "#FFFFFF",
+      "cor2": "#E6D3EA"
+    },
+    "osmanthus": {
+      "nome": "Osmanto",
+      "emoji": "🌼",
+      "cor1": "#FFE0B2",
+      "cor2": "#F59E0B"
+    },
+    "mimosa": {
+      "nome": "Mimosa",
+      "emoji": "🌼",
+      "cor1": "#FFF59D",
+      "cor2": "#F9A825"
+    },
+    "cinnamon": {
+      "nome": "Canela",
+      "emoji": "🍂",
+      "cor1": "#C98B5A",
+      "cor2": "#6D3B1F"
+    },
+    "incense": {
+      "nome": "Incenso",
+      "emoji": "🕯️",
+      "cor1": "#D7CCC8",
+      "cor2": "#5D4E60"
+    },
+    "orris": {
+      "nome": "Orris (raiz de íris)",
+      "emoji": "🌷",
+      "cor1": "#D1C4E9",
+      "cor2": "#7E57C2"
+    },
+    "bulgarian_rose": {
+      "nome": "Rosa búlgara",
+      "emoji": "🌹",
+      "cor1": "#F48FB1",
+      "cor2": "#AD1457"
+    },
+    "cashmeran": {
+      "nome": "Cashmeran",
+      "emoji": "🧶",
+      "cor1": "#D7CCC8",
+      "cor2": "#8D6E63"
+    },
+    "mystikal": {
+      "nome": "Mystikal",
+      "emoji": "✨",
+      "cor1": "#CE93D8",
+      "cor2": "#4A148C"
+    },
+    "mahonial": {
+      "nome": "Mahonial",
+      "emoji": "🌿",
+      "cor1": "#C5E1A5",
+      "cor2": "#558B2F"
     }
   }
 }

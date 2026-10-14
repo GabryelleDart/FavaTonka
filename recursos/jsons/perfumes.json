@@ -2,17 +2,32 @@
   "perfumes": [
     {
       "id": 1,
-      "slug": "scandall",
-      "nome": "Scandall",
+      "slug": "scandal",
+      "nome": "Scandal",
       "marca": "Jean Paul Gaultier",
       "ano": 2017,
       "genero": "Feminino",
-      "familias": ["Gourmand", "Floral"],
-      "descricao": "Um floral gourmand ousado: abre com laranja-sangue suculenta e desce para um coração de mel e flores brancas. O fundo caramelado com patchouli deixa um rastro doce, sedutor e cheio de personalidade.",
-      "notas": {
-        "topo": ["blood_orange", "mandarin"],
-        "coracao": ["honey", "gardenia", "orange_blossom", "jasmine"],
-        "fundo": ["patchouli", "caramel", "beeswax", "licorice"]
+      "familias": [
+        "Gourmand",
+        "Floral"
+      ],
+       "descricao": "Um floral gourmand ousado: abre com laranja-sangue suculenta e desce para um coração de mel e flores brancas. O fundo caramelado com patchouli deixa um rastro doce, sedutor e cheio de personalidade.",      "notas": {
+        "topo": [
+          "blood_orange",
+          "mandarin"
+        ],
+        "coracao": [
+          "honey",
+          "gardenia",
+          "orange_blossom",
+          "jasmine"
+        ],
+        "fundo": [
+          "patchouli",
+          "caramel",
+          "beeswax",
+          "licorice"
+        ]
       }
     },
     {
@@ -22,12 +37,35 @@
       "marca": "Carolina Herrera",
       "ano": 2016,
       "genero": "Feminino",
-      "familias": ["Oriental", "Gourmand", "Floral"],
+      "familias": [
+        "Oriental",
+        "Floral"
+      ],
       "descricao": "A dualidade em frasco: flores brancas luminosas de um lado, fundo escuro e cremoso de cacau, tonka e baunilha do outro. Amêndoa e café dão o toque inesperado logo na saída.",
       "notas": {
-        "topo": ["almond", "coffee", "bergamot", "lemon"],
-        "coracao": ["tuberose", "jasmine_sambac", "orange_blossom", "iris", "rose"],
-        "fundo": ["tonka", "cacao", "vanilla", "praline", "sandalwood", "musk", "amber", "patchouli"]
+        "topo": [
+          "almond",
+          "coffee",
+          "bergamot",
+          "lemon"
+        ],
+        "coracao": [
+          "tuberose",
+          "jasmine_sambac",
+          "orange_blossom",
+          "iris",
+          "rose"
+        ],
+        "fundo": [
+          "tonka",
+          "cacao",
+          "vanilla",
+          "praline",
+          "sandalwood",
+          "musk",
+          "amber",
+          "patchouli"
+        ]
       }
     },
     {
@@ -37,12 +75,33 @@
       "marca": "Chanel",
       "ano": 1921,
       "genero": "Feminino",
-      "familias": ["Floral", "Aldeídico"],
+      "familias": [
+        "Floral",
+        "Aldeídico"
+      ],
       "descricao": "O clássico que inaugurou o floral aldeídico. Um buquê abstrato e elegante de rosa e jasmim, envolvido por aldeídos brilhantes e assentado em sândalo, baunilha e vetiver.",
       "notas": {
-        "topo": ["aldehydes", "ylang", "neroli", "bergamot", "lemon"],
-        "coracao": ["jasmine", "rose", "lily_valley", "iris"],
-        "fundo": ["sandalwood", "vanilla", "vetiver", "amber", "musk", "patchouli"]
+        "topo": [
+          "aldehydes",
+          "ylang",
+          "neroli",
+          "bergamot",
+          "lemon"
+        ],
+        "coracao": [
+          "jasmine",
+          "rose",
+          "lily_valley",
+          "iris"
+        ],
+        "fundo": [
+          "sandalwood",
+          "vanilla",
+          "vetiver",
+          "amber",
+          "musk",
+          "patchouli"
+        ]
       }
     },
     {
@@ -52,12 +111,36 @@
       "marca": "Dior",
       "ano": 1999,
       "genero": "Feminino",
-      "familias": ["Floral", "Frutal"],
+      "familias": [
+        "Floral",
+        "Frutal"
+      ],
       "descricao": "Um buquê dourado e radiante: frutas suculentas na abertura, um coração de flores brancas e violeta, e um fundo macio de almíscar e baunilha. Feminino, luminoso e atemporal.",
       "notas": {
-        "topo": ["pear", "melon", "magnolia", "peach", "mandarin", "bergamot"],
-        "coracao": ["jasmine", "lily_valley", "tuberose", "freesia", "orchid", "plum", "violet", "rose"],
-        "fundo": ["musk", "vanilla", "blackberry", "cedar"]
+        "topo": [
+          "pear",
+          "melon",
+          "magnolia",
+          "peach",
+          "mandarin",
+          "bergamot"
+        ],
+        "coracao": [
+          "jasmine",
+          "lily_valley",
+          "tuberose",
+          "freesia",
+          "orchid",
+          "plum",
+          "violet",
+          "rose"
+        ],
+        "fundo": [
+          "musk",
+          "vanilla",
+          "blackberry",
+          "cedar"
+        ]
       }
     },
     {
@@ -67,24 +150,59 @@
       "marca": "Al Wataniah",
       "ano": null,
       "genero": "Feminino",
-      "familias": ["Floral", "Âmbar", "Gourmand"],
+      "familias": [
+        "Floral",
+        "Âmbar",
+        "Gourmand"
+      ],
       "descricao": "O nome lembra uma manhã de rosas: abre com o brilho picante da tangerina e da pimenta-rosa, floresce em flor de laranjeira e jasmim com um toque de cacau e termina quente, com baunilha, tonka e patchouli.",
       "notas": {
-        "topo": ["mandarin", "pink_pepper"],
-        "coracao": ["orange_blossom", "cacao", "jasmine_sambac"],
-        "fundo": ["vanilla", "tonka", "patchouli"]
+        "topo": [
+          "mandarin",
+          "pink_pepper"
+        ],
+        "coracao": [
+          "orange_blossom",
+          "cacao",
+          "jasmine_sambac"
+        ],
+        "fundo": [
+          "vanilla",
+          "tonka",
+          "patchouli"
+        ]
       }
     },
     {
       "id": 6,
       "slug": "lily-absolute",
-      "nome": "Lily Absolute",
-      "marca": "",
-      "ano": null,
-      "genero": "",
-      "familias": [],
-      "descricao": "",
-      "notas": { "topo": [], "coracao": [], "fundo": [] }
+      "nome": "Lily Absolu",
+      "marca": "O Boticário",
+      "ano": 2020,
+      "genero": "Feminino",
+      "familias": [
+        "Floral",
+        "Doce"
+      ],
+      "descricao": "Um floral branco luminoso e aveludado: frangipani e pimenta-rosa abrem a fragrância, e o coração reúne lírio, jasmim, flor de laranjeira, osmanto e ylang num buquê cremoso. O fundo de almíscar, sândalo e baunilha deixa um final macio e elegante.",
+      "notas": {
+        "topo": [
+          "pink_pepper",
+          "white_frangipani"
+        ],
+        "coracao": [
+          "lily",
+          "jasmine_sambac",
+          "orange_blossom",
+          "osmanthus",
+          "ylang"
+        ],
+        "fundo": [
+          "musk",
+          "sandalwood",
+          "vanilla"
+        ]
+      }
     },
     {
       "id": 7,
@@ -93,12 +211,23 @@
       "marca": "",
       "ano": null,
       "genero": "Feminino",
-      "familias": ["Floral", "Gourmand"],
+      "familias": [
+        "Floral"
+      ],
       "descricao": "Um floral gourmand leve e aéreo: abre com maracujá e gotas de orvalho, revela orquídea e jasmim no coração e assenta em baunilha e madeira âmbar, macios e limpos para o dia a dia.",
       "notas": {
-        "topo": ["passionflower", "dewdrop"],
-        "coracao": ["orchid", "jasmine"],
-        "fundo": ["vanilla", "amberwood"]
+        "topo": [
+          "passionflower",
+          "dewdrop"
+        ],
+        "coracao": [
+          "orchid",
+          "jasmine"
+        ],
+        "fundo": [
+          "vanilla",
+          "amberwood"
+        ]
       }
     },
     {
@@ -108,35 +237,89 @@
       "marca": "Lattafa",
       "ano": 2024,
       "genero": "Feminino",
-      "familias": ["Gourmand", "Floral", "Frutal"],
+      "familias": [
+        "Gourmand",
+        "Floral",
+        "Frutal"
+      ],
       "descricao": "Pura sobremesa: caramelo, leite e açúcar na saída, mel e flores brancas no coração, e um fundo cremoso de baunilha, pralinê e almíscar. Doce, aconchegante e de longa duração.",
       "notas": {
-        "topo": ["caramel", "milk", "sugar"],
-        "coracao": ["honey", "white_flowers"],
-        "fundo": ["vanilla", "praline", "musk"]
+        "topo": [
+          "caramel",
+          "milk",
+          "sugar"
+        ],
+        "coracao": [
+          "honey",
+          "white_flowers"
+        ],
+        "fundo": [
+          "vanilla",
+          "praline",
+          "musk"
+        ]
       }
     },
     {
       "id": 9,
       "slug": "india-misteriosa",
       "nome": "India Misteriosa",
-      "marca": "",
+      "marca": "Mahogany",
       "ano": null,
-      "genero": "",
-      "familias": [],
-      "descricao": "",
-      "notas": { "topo": [], "coracao": [], "fundo": [] }
+      "genero": "Feminino",
+      "familias": [
+        "Floral",
+        "Oriental",
+        "Amadeirado"
+      ],
+      "descricao": "Inspirada nos aromas exóticos da Índia, é uma fragrância floriental amadeirada e adocicada. Abre com frutas e cítricos, floresce em mimosa, jasmim e rosa e termina em madeiras quentes.",
+      "notas": {
+        "topo": [
+          "mandarin",
+          "bergamot",
+          "peach"
+        ],
+        "coracao": [
+          "mimosa",
+          "jasmine",
+          "rose"
+        ],
+        "fundo": [
+          "sandalwood",
+          "cedar"
+        ]
+      }
     },
     {
       "id": 10,
       "slug": "her-confession",
       "nome": "Her Confession",
-      "marca": "",
-      "ano": null,
-      "genero": "",
-      "familias": [],
-      "descricao": "",
-      "notas": { "topo": [], "coracao": [], "fundo": [] }
+      "marca": "Lattafa",
+      "ano": 2024,
+      "genero": "Feminino",
+      "familias": [
+        "Âmbar",
+        "Gourmand",
+        "Floral"
+      ],
+      "descricao": "Um âmbar baunilhado de personalidade: a canela quente da abertura encontra um coração de tuberosa, jasmim e incenso. O fundo é cremoso e envolvente, com baunilha, fava-tonka e almíscar.",
+      "notas": {
+        "topo": [
+          "cinnamon",
+          "mystikal"
+        ],
+        "coracao": [
+          "tuberose",
+          "mahonial",
+          "jasmine",
+          "incense"
+        ],
+        "fundo": [
+          "vanilla",
+          "tonka",
+          "musk"
+        ]
+      }
     }
   ]
 }

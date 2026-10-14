@@ -36,47 +36,43 @@ class PiramideOlfativa extends StatelessWidget {
   ) {
     if (chaves.isEmpty) return const SizedBox.shrink();
     final estado = context.read<GerenciadorEstado>();
+    final p = context.paleta;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.only(bottom: 22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
                 titulo,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.6,
-                  fontSize: 12,
-                  color: Cores.vinho,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2,
+                  fontSize: 11.5,
+                  color: p.titulo,
                 ),
               ),
-              const SizedBox(width: 8),
-              Text(
-                legenda,
-                style: const TextStyle(fontSize: 12, color: Colors.black54),
-              ),
+              const SizedBox(width: 10),
+              Text(legenda, style: TextStyle(fontSize: 12, color: p.textoSuave)),
             ],
           ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 112,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: chaves.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 6),
-              itemBuilder: (_, i) {
-                final nota = estado.nota(chaves[i]);
-                return AvatarNota(
-                  nota: nota,
-                  tamanho: 68,
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 4,
+            runSpacing: 14,
+            children: [
+              for (final k in chaves)
+                AvatarNota(
+                  nota: estado.nota(k),
+                  tamanho: 64,
                   mostrarNome: true,
-                  onTap: () => onNotaTap(nota),
-                );
-              },
-            ),
+                  onTap: () => onNotaTap(estado.nota(k)),
+                ),
+            ],
           ),
         ],
       ),
