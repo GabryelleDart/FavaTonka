@@ -2,8 +2,7 @@ import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/tema.dart';
 import 'package:flutter/material.dart';
 
-/// Foto do perfume (recursos/imagens/perfumes/<slug>.jpg). Se o arquivo
-/// ainda não existir, desenha um frasco estilizado como alternativa.
+
 class FotoPerfume extends StatelessWidget {
   final Perfume perfume;
   final BoxFit fit;

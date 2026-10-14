@@ -1,0 +1,7 @@
+# Esconde do GitHub as pastas geradas pelo Flutter na estatística de linguagens
+android/** linguist-vendored
+ios/** linguist-vendored
+macos/** linguist-vendored
+windows/** linguist-vendored
+linux/** linguist-vendored
+web/** linguist-vendored

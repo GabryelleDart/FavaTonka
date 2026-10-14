@@ -11,7 +11,8 @@
         "Gourmand",
         "Floral"
       ],
-       "descricao": "Um floral gourmand ousado: abre com laranja-sangue suculenta e desce para um coração de mel e flores brancas. O fundo caramelado com patchouli deixa um rastro doce, sedutor e cheio de personalidade.",      "notas": {
+      "descricao": "Um floral gourmand ousado: abre com laranja-sangue suculenta e desce para um coração de mel e flores brancas. O fundo caramelado com patchouli deixa um rastro doce, sedutor e cheio de personalidade.",
+      "notas": {
         "topo": [
           "blood_orange",
           "mandarin"
@@ -53,8 +54,8 @@
           "tuberose",
           "jasmine_sambac",
           "orange_blossom",
-          "iris",
-          "rose"
+          "orris",
+          "bulgarian_rose"
         ],
         "fundo": [
           "tonka",
@@ -63,8 +64,11 @@
           "praline",
           "sandalwood",
           "musk",
+          "cashmeran",
           "amber",
-          "patchouli"
+          "patchouli",
+          "cinnamon",
+          "cedar"
         ]
       }
     },
@@ -92,15 +96,17 @@
           "jasmine",
           "rose",
           "lily_valley",
-          "iris"
+          "iris",
+          "orris"
         ],
         "fundo": [
           "sandalwood",
+          "cedar",
           "vanilla",
-          "vetiver",
           "amber",
-          "musk",
-          "patchouli"
+          "vetiver",
+          "patchouli",
+          "musk"
         ]
       }
     },

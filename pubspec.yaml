@@ -93,3 +93,31 @@ flutter:
   assets:
     - recursos/jsons/
     - recursos/imagens/perfumes/
+  # Fontes do app (arquivos em recursos/fontes, licença OFL)
+  fonts:
+    - family: Lora
+      fonts:
+        - asset: recursos/fontes/Lora-Regular.ttf
+        - asset: recursos/fontes/Lora-Medium.ttf
+          weight: 500
+        - asset: recursos/fontes/Lora-SemiBold.ttf
+          weight: 600
+        - asset: recursos/fontes/Lora-Bold.ttf
+          weight: 700
+        - asset: recursos/fontes/Lora-Italic.ttf
+          style: italic
+        - asset: recursos/fontes/Lora-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: recursos/fontes/Lora-SemiBoldItalic.ttf
+          style: italic
+          weight: 600
+    - family: Poppins
+      fonts:
+        - asset: recursos/fontes/Poppins-Light.ttf
+          weight: 300
+        - asset: recursos/fontes/Poppins-Regular.ttf
+        - asset: recursos/fontes/Poppins-Medium.ttf
+          weight: 500
+        - asset: recursos/fontes/Poppins-Bold.ttf
+          weight: 700

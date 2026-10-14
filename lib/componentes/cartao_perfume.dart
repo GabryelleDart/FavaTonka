@@ -25,7 +25,6 @@ class CartaoPerfume extends StatelessWidget {
     final favorito = estado.ehFavorito(perfume.id);
     final todas = perfume.coracao.isNotEmpty ? perfume.coracao : perfume.todasNotas;
     final chaves = todas.take(4).toList();
-    final restantes = perfume.todasNotas.length - chaves.length;
 
     return Material(
       color: Colors.transparent,
@@ -92,19 +91,29 @@ class CartaoPerfume extends StatelessWidget {
                       'notas em breve',
                       style: TextStyle(fontSize: 11, color: p.textoSuave),
                     )
-                  : Row(
-                      children: [
-                        for (final k in chaves)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: AvatarNota(nota: estado.nota(k), tamanho: 26),
-                          ),
-                        if (restantes > 0)
-                          Text(
-                            '+$restantes',
-                            style: TextStyle(fontSize: 11.5, color: p.textoSuave),
-                          ),
-                      ],
+                  : LayoutBuilder(
+                      builder: (context, caixa) {
+                        // Cada círculo ocupa ~30px; sobra espaço para o "+N".
+                        final cabem =
+                            ((caixa.maxWidth - 30) / 30).floor().clamp(1, 4).toInt();
+                        final mostrar = chaves.take(cabem).toList();
+                        final restantes = perfume.todasNotas.length - mostrar.length;
+
+                        return Row(
+                          children: [
+                            for (final k in mostrar)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: AvatarNota(nota: estado.nota(k), tamanho: 26),
+                              ),
+                            if (restantes > 0)
+                              Text(
+                                '+$restantes',
+                                style: TextStyle(fontSize: 11.5, color: p.textoSuave),
+                              ),
+                          ],
+                        );
+                      },
                     ),
             ),
             const SizedBox(height: 4),

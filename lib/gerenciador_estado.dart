@@ -101,37 +101,56 @@ class GerenciadorEstado extends ChangeNotifier {
   List<Perfume> perfumesComNota(String chave) =>
       _perfumes.where((p) => p.todasNotas.contains(chave)).toList();
 
-  List<Perfume> perfumesFiltrados(String busca, String? familia) {
+   /// Palavras pesquisáveis de um perfume: nome, marca e notas
+  /// (em português e a chave em inglês, ex.: "baunilha" e "vanilla").
+    // Palavrinhas que não ajudam na busca (ex.: "Lírio de Grasse").
+  static const Set<String> _ignoradas = {'de', 'da', 'do', 'das', 'dos'};
+
+  /// Palavras pesquisáveis de um perfume: nome, marca e notas
+  /// (em português e a chave em inglês, ex.: "baunilha" e "vanilla").
+  List<String> _palavrasDe(Perfume p) => [
+        ..._palavras(p.nome),
+        _compactar(p.nome),
+        ..._palavras(p.marca),
+        for (final k in p.todasNotas) ..._palavras('${nota(k).nome} $k'),
+      ];
+
+    List<Perfume> perfumesFiltrados(String busca, String? familia) {
     final termos = _palavras(busca);
+    final compactoBusca = _compactar(busca);
 
     return _perfumes.where((p) {
       if (familia != null && !p.familias.contains(familia)) return false;
       if (termos.isEmpty) return true;
 
-      final palavras = <String>[
-        ..._palavras(p.nome),
-        _normalizar(p.nome).replaceAll(RegExp(r'[^a-z0-9]'), ''),
-        ..._palavras(p.marca),
-        for (final k in p.todasNotas) ..._palavras(nota(k).nome),
-      ];
-
-      // Cada termo digitado precisa casar com alguma palavra do perfume.
-      return termos.every(
-        (t) => palavras.any((w) => t.length <= 3 ? w == t : w.startsWith(t)),
+      // Cada termo digitado precisa ser o começo de alguma palavra do perfume
+      // (nome, marca ou notas).
+      final palavras = _palavrasDe(p);
+      final porPalavras = termos.every(
+        (t) => palavras.any((w) => w.startsWith(t)),
       );
+
+      // Também aceita o nome "colado": "j adore" -> "jadore", "no 5" -> "no5".
+      final porNome = _compactar(p.nome).startsWith(compactoBusca);
+
+      return porPalavras || porNome;
     }).toList();
   }
 
   static List<String> _palavras(String texto) {
     return _normalizar(texto)
+        .replaceAll(RegExp(r"['’`´]"), '') // J'adore vira "jadore"
         .split(RegExp(r'[^a-z0-9]+'))
-        .where((w) => w.isNotEmpty)
+        .where((w) => w.isNotEmpty && !_ignoradas.contains(w))
         .toList();
   }
 
+  static String _compactar(String texto) =>
+      _normalizar(texto).replaceAll(RegExp(r'[^a-z0-9]'), '');
+
   static String _normalizar(String texto) {
-    const de = 'áàâãäéèêëíìîïóòôõöúùûüç';
-    const para = 'aaaaaeeeeiiiiooooouuuuc';
+    const de = 'áàâãäéèêëíìîïóòôõöúùûüçºª';
+    const para = 'aaaaaeeeeiiiiooooouuuucoa';
     var r = texto.toLowerCase();
     for (var i = 0; i < de.length; i++) {
       r = r.replaceAll(de[i], para[i]);

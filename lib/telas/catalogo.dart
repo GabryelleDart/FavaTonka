@@ -129,7 +129,9 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
             .clamp(2, 6)
             .toInt();
         final larguraCartao = (largura - 2 * margem - (colunas - 1) * espaco) / colunas;
-        final alturaCartao = larguraCartao * 1.25 + 92;
+        final escala =
+            (MediaQuery.textScalerOf(context).scale(14) / 14).clamp(1.0, 1.6).toDouble();
+        final alturaCartao = larguraCartao * 1.25 + 92 * escala;
 
         return RefreshIndicator(
           color: p.titulo,
