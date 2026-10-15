@@ -1,6 +1,7 @@
 # Miscellaneous
 *.class
 *.lock
+!pubspec.lock
 *.log
 *.pyc
 *.swp
@@ -41,7 +42,6 @@ analysis_benchmark.json
 .pub-preload-cache/
 .pub/
 build/
-flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
@@ -119,7 +119,8 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 
 # IDEs (Visual Studio Code e IntelliJ/Android Studio)
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
 *.iml
 *.ipr
