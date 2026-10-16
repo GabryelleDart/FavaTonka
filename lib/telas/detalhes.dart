@@ -39,15 +39,16 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
     super.dispose();
   }
 
-  void _pedirLogin(String motivo) {
+    void _pedirLogin(String motivo) {
     final messenger = ScaffoldMessenger.of(context);
+    final navegador = Navigator.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
         content: Text(motivo),
         action: SnackBarAction(
           label: 'ENTRAR',
-          onPressed: () => Navigator.of(context).push(
+          onPressed: () => navegador.push(
             MaterialPageRoute(builder: (_) => const TelaLogin()),
           ),
         ),
