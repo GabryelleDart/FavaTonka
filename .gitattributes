@@ -5,3 +5,9 @@ macos/** linguist-vendored
 windows/** linguist-vendored
 linux/** linguist-vendored
 web/** linguist-vendored
+
+# Fim de linha: LF no repositório para todo mundo
+* text=auto eol=lf
+*.bat text eol=crlf
+gradlew text eol=lf
+*.jar binary
