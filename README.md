@@ -141,12 +141,14 @@ Exige login. Se você não estiver logado, o botão de favoritos avisa e leva à
 | 13. Login mockado | Usuários fixos no código, em `lib/autenticador.dart`. |
 | 14. Dados em JSON estáticos | `recursos/jsons/perfumes.json`, `notas.json` e `comentarios.json`. |
 | 15. Entrega em plataforma Git | Repositório no GitHub; o link vai pelo Classroom no dia da entrega. |
-| 10. Instruções para rodar fora do emulador | Seção 7 deste README (web, Windows, etc.). |
+| 10. Instruções para rodar  | Seção 7 deste README (Android Studio, Chrome, pelo terminal ou pelo botão de play). |
 | 8 e 9. Vídeo de até 3 minutos | Entregue à parte, com link testado. |
 
 ## 5. Tecnologias
 
-- **Flutter** 3.47 ou superior (Dart 3.13.2 ou superior, conforme o `pubspec.yaml`), com Material 3.
+- **Flutter 3.47.2** (stable, Dart 3.13.2), com Material 3. É a versão usada no desenvolvimento e travada no `pubspec.yaml`, que aceita só a série 3.47.x.
+- **JDK 17 ou superior** para o build Android (o JDK que acompanha o Android Studio serve).
+- **Gradle 9.3.1**, **Android Gradle Plugin 9.1.0** e **Kotlin 2.4.0**: já fixados em `android/` (o Gradle é baixado sozinho pelo `gradlew`).
 - **provider**: gerenciamento de estado (dados, login, favoritos, comentários, tema e busca).
 - **share_plus**: compartilhamento de um perfume.
 - **intl**: formatação das datas dos comentários.
@@ -175,65 +177,69 @@ android/ ios/ web/ windows/ linux/ macos/   pastas de cada plataforma (geradas p
 
 ## 7. Como executar
 
-O FavaTonka pode ser executado de **três formas**: no emulador do Android Studio (7.3), no celular por
-cabo USB, Android ou iPhone (7.4), ou no Chrome (7.5). Antes, siga os passos de 7.1 e 7.2.
+O FavaTonka foi testado de duas formas: no **emulador do Android Studio** (Medium Phone) e no **Chrome**.
+Em cada uma você pode rodar pelo **terminal** (`flutter run`) ou pelo **botão de play** do VS Code.
+Siga os passos 7.1 a 7.3 uma vez e depois escolha a forma que preferir (7.4 ou 7.5).
 
-### 7.1 Antes de começar
+### 7.1 O que instalar
 
-Instale o **Flutter** (https://docs.flutter.dev/get-started/install) e o **Git**. Depois, no terminal:
-
-```bash
-flutter --version
-flutter doctor -v
-```
-
-| Comando | Para que serve |
+| Item | Para que serve |
 |---|---|
-| `flutter --version` | Mostra a versão instalada. O projeto precisa do Flutter 3.47 ou superior. Se for mais antigo, rode `flutter upgrade`. |
-| `flutter doctor -v` | Faz um diagnóstico da instalação e lista o que falta (Android SDK, Chrome, Xcode...). Resolva o que aparecer com `[!]` ou `[✗]` na plataforma que você vai usar. |
+| **Git** | Baixar o projeto do GitHub (opcional se você baixar o zip). |
+| **VS Code** com as extensões **Flutter** e **Dart** | Editor onde o projeto é aberto e executado. |
+| **Flutter 3.47.2** (stable, Dart 3.13.2) | https://docs.flutter.dev/get-started/install. Versões fora da série 3.47.x são recusadas pelo `flutter pub get`. |
+| **JDK 17 ou superior** | Necessário para o build Android. O JDK que acompanha o Android Studio serve. |
+| **Android Studio** (SDK e emulador) | Necessário só para a forma 7.4. |
+| **Google Chrome** | Necessário só para a forma 7.5. |
+| **Internet** | Usada na primeira execução. |
 
 ### 7.2 Baixar o projeto
 
-Há dois repositórios. Use o **completo** se puder. Use o **enxuto** se for o que está no GitHub.
+Escolha **uma** das opções:
 
-**Repositório completo** (inclui as pastas de plataforma, como `android/`, `ios/` e `web/`):
+**Opção A: clonar com o Git**
 
 ```bash
-git clone <URL-DO-REPOSITORIO-COMPLETO>
+git clone <URL-DO-REPOSITORIO>
 cd FavaTonka
+```
+
+**Opção B: baixar o zip**
+
+1. No GitHub, clique em **Code → Download ZIP**.
+2. Extraia o zip. A pasta extraída pode se chamar `FavaTonka-main`.
+3. Abra um terminal dentro dessa pasta (a que contém o arquivo `pubspec.yaml`).
+
+Depois, no VS Code: **File → Open Folder** e escolha essa pasta. Abra sempre a pasta **raiz** do projeto,
+nunca só a pasta `android`.
+
+### 7.3 Conferir o ambiente e baixar as bibliotecas
+
+No terminal do VS Code (**Terminal → New Terminal**), dentro da pasta do projeto:
+
+```bash
+flutter --version
+java -version
+flutter doctor -v
 flutter pub get
 ```
 
 | Comando | Para que serve |
 |---|---|
-| `git clone <URL>` | Copia o repositório para o seu computador. |
-| `cd FavaTonka` | Entra na pasta do projeto. Todos os comandos seguintes são rodados dentro dela. |
-| `flutter pub get` | Baixa as bibliotecas que o app usa (`provider`, `share_plus`, `intl`...), listadas no `pubspec.yaml`. |
+| `flutter --version` | Mostra a versão do Flutter. Deve ser a **3.47.2**. |
+| `java -version` | Mostra o JDK. Deve ser a versão **17 ou superior**. |
+| `flutter doctor -v` | Diagnóstico da instalação. Resolva o que aparecer com `[!]` ou `[✗]` na plataforma que você vai usar. |
+| `flutter pub get` | Baixa as bibliotecas (`provider`, `share_plus`, `intl`...) nas versões exatas do `pubspec.lock`. |
 
-**Repositório enxuto** (só o código, os recursos e o `pubspec.yaml`, sem as pastas de plataforma):
+> Se o VS Code mostrar o aviso "Get packages", clique nele: faz o mesmo que `flutter pub get`.
+> Logo depois de abrir o projeto, é normal ver muitos erros em `lib/` até as bibliotecas serem baixadas.
 
-```bash
-git clone <URL-DO-REPOSITORIO-ENXUTO>
-cd FavaTonka
-flutter create --project-name favatonka .
-flutter pub get
-```
+> **A primeira execução demora** (de 3 a 10 minutos no Android). O Gradle baixa suas ferramentas e
+> compila tudo do zero. Da segunda vez em diante leva segundos. Não cancele.
 
-| Comando | Para que serve |
-|---|---|
-| `flutter create --project-name favatonka .` | **Gera as pastas de plataforma que faltam** (`android`, `ios`, `web`, `windows`, `linux`, `macos`). O ponto no final significa "nesta pasta". Não apaga nem altera `lib/`, `recursos/` nem o `pubspec.yaml`. O `--project-name favatonka` garante o nome do pacote que o código usa nos imports. |
-| `flutter pub get` | Baixa as bibliotecas, como no repositório completo. |
+### 7.4 Forma 1: emulador do Android Studio (Medium Phone)
 
-> No repositório enxuto o app funciona igual, mas abre com o **ícone padrão do Flutter** e o nome
-> "favatonka" no Android, porque o ícone e o nome personalizados ficam dentro das pastas de plataforma
-> do repositório completo. Para gerar só uma plataforma, use `--platforms`, por exemplo
-> `flutter create --project-name favatonka --platforms=android,web .`
-
-### 7.3 Alternativa 1: emulador do Android Studio
-
-Funciona em Windows, Linux e macOS.
-
-**Preparação (uma vez só):**
+#### Preparação (uma vez só)
 
 1. Instale o **Android Studio**. Em *More Actions → SDK Manager → SDK Tools*, marque
    **Android SDK Command-line Tools**, **Android SDK Platform-Tools** e **Android Emulator**.
@@ -245,104 +251,47 @@ Funciona em Windows, Linux e macOS.
      sudo apt install qemu-kvm
      sudo adduser $USER kvm
 ```
-3. Crie o emulador: *More Actions → Virtual Device Manager → Create Device*, escolha **Pixel 7**,
-   uma imagem do sistema (por exemplo, API 34, x86_64) e clique em *Finish*.
+3. Crie o emulador: *More Actions → Virtual Device Manager → Create Device*, escolha **Medium Phone**,
+   uma imagem do sistema e clique em *Finish*.
+4. Aceite as licenças do Android SDK (digite `y` em cada pergunta):
+```bash
+   flutter doctor --android-licenses
+```
 
-**Rodar:**
+#### Rodar pelo terminal
 
 ```bash
-flutter doctor --android-licenses
 flutter emulators
-flutter emulators --launch Pixel_7
+flutter emulators --launch <ID-DO-EMULADOR>
 flutter devices
 flutter run
 ```
 
 | Comando | Para que serve |
 |---|---|
-| `flutter doctor --android-licenses` | Aceite as licenças do Android SDK (digite `y` em cada pergunta). Sem isso, o build do Android falha. |
-| `flutter emulators` | Lista os emuladores criados e o id de cada um. |
-| `flutter emulators --launch Pixel_7` | Abre o emulador. Troque `Pixel_7` pelo id mostrado no comando anterior. Espere ele carregar a tela inicial. |
+| `flutter emulators` | Lista os emuladores criados e o id de cada um (o do Medium Phone aparece aqui). |
+| `flutter emulators --launch <ID-DO-EMULADOR>` | Abre o emulador. Troque pelo id mostrado no comando anterior. |
 | `flutter devices` | Confirma que o emulador aparece como dispositivo (algo como `emulator-5554`). |
-| `flutter run` | Compila o app, instala no emulador e abre. Se houver mais de um dispositivo, use `flutter run -d emulator-5554`. |
+| `flutter run` | Compila o app, instala no emulador e abre. Com mais de um dispositivo, use `flutter run -d emulator-5554`. |
+
+#### Rodar pelo botão de play do VS Code
+
+1. Abra o emulador (pelo comando acima ou pelo *Device Manager* do Android Studio).
+2. **Espere a tela inicial do Android aparecer** (relógio e ícones). Se rodar antes disso, aparece
+   `device is still booting`.
+3. Na barra azul inferior do VS Code, clique no nome do dispositivo (canto direito) e escolha
+   o emulador **Medium Phone**.
+4. Abra o arquivo `lib/main.dart` e clique em **▷ Run** (acima de `void main()`),
+   no botão de play no canto superior direito, ou aperte **F5**.
 
 Se o Flutter não achar o SDK, informe o caminho: `flutter config --android-sdk "<CAMINHO-DO-SDK>"`.
 No Windows, ele costuma ficar em `C:\Users\<usuário>\AppData\Local\Android\Sdk`.
 
-### 7.4 Alternativa 2: celular por cabo USB
+### 7.5 Forma 2: Chrome
 
-#### Android (Windows, Linux ou macOS)
+Não precisa de emulador, Java nem Gradle. Instale o **Google Chrome**.
 
-1. No celular: *Configurações → Sobre o telefone* e toque 7 vezes em **Número da versão**. Depois, em
-   *Opções do desenvolvedor*, ative a **Depuração USB**.
-2. Conecte o cabo (precisa ser de dados, e não só de carga) e, no celular, escolha o modo
-   **Transferência de arquivos**. Aceite a janela "Permitir depuração USB?".
-3. **Driver, se o celular não aparecer:**
-   - **Windows:** instale o driver do fabricante (Samsung, Motorola, Xiaomi...) ou, no Android Studio,
-     *SDK Manager → SDK Tools → Google USB Driver*.
-   - **Linux:** libere o acesso ao USB e depois saia e entre na sessão de novo:
-```bash
-     sudo apt install android-sdk-platform-tools-common
-     sudo usermod -aG plugdev $USER
-```
-   - **macOS:** não precisa de driver.
-
-```bash
-adb devices
-flutter devices
-flutter run
-```
-
-| Comando | Para que serve |
-|---|---|
-| `adb devices` | Lista os aparelhos vistos pelo Android. O seu deve aparecer com `device`. Se aparecer `unauthorized`, aceite a janela no celular. Se aparecer `no permissions` (Linux), refaça a parte do `plugdev`. |
-| `flutter devices` | Confirma que o Flutter enxerga o celular. |
-| `flutter run` | Compila, instala e abre o app no celular. Com mais de um dispositivo, use `flutter run -d <id>`. |
-
-Se o `adb` não for reconhecido, adicione ao PATH a pasta `platform-tools` do Android SDK. Se o celular
-não aparecer, reinicie o serviço com `adb kill-server` e depois `adb start-server`.
-
-#### iPhone
-
-> **Só funciona em um Mac com Xcode.** Windows e Linux não conseguem compilar para iPhone; nesses
-> sistemas, use o celular Android (acima), o emulador (7.3) ou o Chrome (7.5).
-
-1. Instale o **Xcode** pela App Store e prepare-o:
-```bash
-   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-   sudo xcodebuild -runFirstLaunch
-   sudo gem install cocoapods
-```
-2. No iPhone, ative o **Modo Desenvolvedor** (*Ajustes → Privacidade e Segurança → Modo Desenvolvedor*)
-   e reinicie o aparelho. Conecte o cabo e toque em **Confiar neste computador**.
-3. Abra o projeto no Xcode, escolha seu Apple ID e troque o identificador do app por um único:
-```bash
-   open ios/Runner.xcworkspace
-```
-   Em *Runner → Signing & Capabilities*, escolha o **Team** (um Apple ID gratuito serve) e mude o
-   **Bundle Identifier** (por exemplo, `br.edu.ifba.favatonka.seunome`).
-4. Rode:
-```bash
-   flutter devices
-   flutter run
-```
-5. Na primeira vez, o iPhone pode bloquear o app. Vá em *Ajustes → Geral → VPN e Gerenciamento de
-   Dispositivo*, toque no seu Apple ID e escolha **Confiar**.
-
-| Comando | Para que serve |
-|---|---|
-| `sudo xcode-select --switch ...` | Diz ao sistema qual Xcode usar. |
-| `sudo xcodebuild -runFirstLaunch` | Conclui a instalação dos componentes do Xcode. |
-| `sudo gem install cocoapods` | Instala o CocoaPods, que baixa as bibliotecas nativas do iPhone. |
-| `open ios/Runner.xcworkspace` | Abre a parte iOS do projeto no Xcode, para configurar a assinatura. |
-| `flutter devices` | Confirma que o iPhone aparece. |
-| `flutter run` | Compila e instala no iPhone. Se der erro de CocoaPods, rode `cd ios && pod install && cd ..` e tente de novo. |
-
-Com Apple ID gratuito, o app instalado deixa de abrir após cerca de 7 dias; basta rodar `flutter run` de novo.
-
-### 7.5 Alternativa 3: Chrome
-
-Funciona em Windows, Linux e macOS, sem emulador nem cabo. Instale o **Google Chrome** e rode:
+#### Rodar pelo terminal
 
 ```bash
 flutter config --enable-web
@@ -356,8 +305,12 @@ flutter run -d chrome
 | `flutter devices` | Deve listar **Chrome (web)**. |
 | `flutter run -d chrome` | Compila o app para a web e abre numa janela do Chrome. |
 
-Com o app rodando no terminal: `r` recarrega o código, `R` reinicia o app e `q` encerra. Dá para
-redimensionar a janela do Chrome para ver o layout mudar de celular para desktop.
+#### Rodar pelo botão de play do VS Code
+
+1. Na barra azul inferior do VS Code, clique no nome do dispositivo e escolha **Chrome (web)**.
+2. Abra o arquivo `lib/main.dart` e clique em **▷ Run** (acima de `void main()`),
+   no botão de play no canto superior direito, ou aperte **F5**.
+
 
 Se o Chrome não for encontrado, informe o caminho dele:
 
@@ -369,42 +322,51 @@ $env:CHROME_EXECUTABLE="C:\Program Files\Google\Chrome\Application\chrome.exe"
 export CHROME_EXECUTABLE=/usr/bin/google-chrome
 ```
 
-### 7.6 Se o Android der erro: apagar e recriar a pasta `android`
+### 7.6 Se o Android der erro de Gradle
 
-Erros de Gradle, plugin não encontrado ou diferença de versões (comuns depois de atualizar o Flutter)
-costumam se resolver recriando a pasta `android`:
+O repositório já traz as versões fixadas (Gradle 9.3.1, Android Gradle Plugin 9.1.0, Kotlin 2.4.0 e
+Flutter 3.47.2). Antes de mexer na pasta `android`, siga esta ordem:
 
-1. Pare o app e apague a pasta `android`:
+1. **Confira o ambiente.** O Flutter deve ser o 3.47.2 e o Java, 17 ou superior:
+```bash
+   flutter --version
+   java -version
+```
+2. **Limpe e rode de novo:**
+```bash
+   flutter clean
+   flutter pub get
+   flutter run
+```
+3. **Veja o erro de verdade.** O texto importante vem depois de `What went wrong:`. Para ver tudo:
+```bash
+   flutter run -v
+```
+4. **Último recurso: recriar a pasta `android`.** Só faça se os passos acima não resolverem:
 ```bash
    # Windows (PowerShell)
    Remove-Item -Recurse -Force android
 
    # Linux e macOS
    rm -rf android
-```
-2. Recrie só o Android com os arquivos da versão atual do Flutter:
-```bash
-   flutter create --platforms=android .
-```
-   Se o Flutter reclamar do nome do projeto, use `flutter create --project-name favatonka --platforms=android .`
-3. Limpe e rode de novo:
-```bash
-   flutter clean
-   flutter pub get
-   flutter run
+
+   flutter create --project-name favatonka --platforms=android .
 ```
 
 | Comando | Para que serve |
 |---|---|
-| `Remove-Item -Recurse -Force android` / `rm -rf android` | Apaga a pasta `android` com a configuração que deu erro. |
-| `flutter create --platforms=android .` | Recria **apenas** a pasta `android`. Não mexe em `lib/`, `recursos/` nem no `pubspec.yaml`. |
 | `flutter clean` | Apaga os arquivos de build antigos. |
-| `flutter pub get` | Baixa as bibliotecas de novo. |
-| `flutter run` | Compila e abre o app. |
+| `flutter pub get` | Baixa as bibliotecas nas versões do `pubspec.lock`. |
+| `flutter run -v` | Roda mostrando todos os detalhes, para achar a primeira mensagem de erro. |
 
-> Ao recriar, o **ícone** e o **nome** personalizados do Android voltam ao padrão. Para recuperá-los,
-> copie as pastas `android/app/src/main/res/mipmap-*` do repositório completo e troque
-> `android:label="favatonka"` por `android:label="FavaTonka"` em `android/app/src/main/AndroidManifest.xml`.
+> **Aviso "Gradle: Build Error" na barra inferior do VS Code:** quase sempre é só a extensão de Java, e não
+> o app. Se o `flutter run` ou o play funcionam, ignore. Para limpar o aviso, use `Ctrl+Shift+P` e
+> "Developer: Reload Window". Veja a seção 8.
+
+> Ao recriar a pasta `android`, o Flutter usa o modelo da versão instalada, que pode trazer outras versões de
+> Gradle e Kotlin, e o **ícone** e o **nome** do app voltam ao padrão. Para recuperá-los, copie as pastas
+> `android/app/src/main/res/mipmap-*` do GitHub e troque `android:label="favatonka"` por
+> `android:label="FavaTonka"` em `android/app/src/main/AndroidManifest.xml`. Por isso este é o último recurso.
 
 ### 7.7 Credenciais de teste
 
@@ -422,15 +384,19 @@ Para usar sem login, basta não entrar: a tela de login tem o botão "Continuar 
 | `SDK location not found` | O Gradle não achou o Android SDK. Rode `flutter config --android-sdk "<caminho do SDK>"` e depois `flutter pub get`. No Windows o caminho costuma ser `C:\Users\<usuário>\AppData\Local\Android\Sdk`. |
 | `Some Android licenses not accepted` | Rode `flutter doctor --android-licenses` e aceite tudo com `y`. |
 | `The Android emulator exited with code 1` | Virtualização desligada ou emulador travado. Ative VT-x/SVM na BIOS, ative a *Plataforma do Hipervisor do Windows*, use *Cold Boot Now* no Device Manager ou troque Graphics para *Software*. Para ver a causa: `emulator -avd <nome> -verbose`. |
-| `Plugin with id 'com.android.library' not found` (projetos `jni` ou `share_plus`) | Aviso do editor, que importa cada pasta `android` de plugin isoladamente. Não afeta o app: se `flutter run` funciona, ignore. No VS Code, para parar o aviso, crie o arquivo `.vscode/settings.json` com `{ "java.import.gradle.enabled": false }`. Essa pasta fica fora do Git (está no `.gitignore`). |
+| `Plugin with id 'com.android.library' not found` (projetos `jni`, `jni_flutter` ou `share_plus`) | Aviso do editor, que abre a pasta `android` de cada plugin isoladamente. Não afeta o app: se o `flutter run` funciona, ignore. O arquivo `.vscode/settings.json` do repositório já desliga essa análise; se o aviso continuar, use `Ctrl+Shift+P` e "Developer: Reload Window". |
 | `Building with plugins requires symlink support` (Windows) | Ative o Modo de Desenvolvedor: execute `start ms-settings:developers`, ative a opção e reinicie o terminal. |
-| `Because favatonka requires SDK version ^3.13.2...` | Flutter desatualizado. Rode `flutter upgrade`. |
-| Chrome ou Windows não aparecem em `flutter devices` | `flutter config --enable-web` ou `--enable-windows-desktop`, depois `flutter doctor`. |
-| Celular não aparece | Confira o cabo, a depuração USB, o driver do fabricante e `adb devices`. |
+| `Because favatonka requires SDK version ...` ou `... requires Flutter SDK version ...` | A versão do Flutter é diferente da usada no projeto. Instale o **Flutter 3.47.2** e rode `flutter pub get` de novo. Confira com `flutter --version`. |
+| Chrome não aparece em `flutter devices` | Rode `flutter config --enable-web` e depois `flutter doctor`. Se o Chrome estiver instalado e mesmo assim não aparecer, informe o caminho (seção 7.5). |
 | Fotos ou fontes não mudam depois de editar | Arquivos de recursos só são lidos ao iniciar o app. Pare e rode `flutter run` de novo (hot reload não basta). Se persistir: `flutter clean` e `flutter pub get`. |
 | Aparece um frasco desenhado no lugar da foto | O arquivo da foto não foi achado. Veja a seção 9. |
-| Erro de Gradle após atualizar o Flutter | `flutter clean`, apague `android/.gradle` e rode `flutter run` de novo. |
+| Erro de Gradle depois de atualizar o Flutter | Volte para o Flutter 3.47.2. Depois: `flutter clean`, apague `android/.gradle` e rode `flutter run` de novo. |
 | Qualquer erro estranho de build | `flutter clean`, `flutter pub get`, `flutter run`. Se continuar, rode `flutter run -v` e veja o primeiro erro. |
+| **Gradle: Build Error** na barra inferior do VS Code | Quase sempre é aviso da extensão de Java, e não do app. Confirme rodando `flutter build apk --debug`: se terminar com `Built build\app\outputs\flutter-apk\app-debug.apk`, o projeto está certo. Para limpar o aviso: `Ctrl+Shift+P` e "Developer: Reload Window". |
+| `WARNING: A restricted method in java.lang.System has been called` | Aviso do JDK 21 sobre o Gradle 9.3.1. Não impede o build, pode ignorar. |
+| `Error: device is still booting` / `ADB exited with exit code 1` | O emulador ainda estava ligando. Espere a tela inicial do Android aparecer e rode de novo. Se persistir: `adb devices` (deve mostrar `device`) e, no Device Manager, *Cold Boot Now*. |
+| A primeira execução demora vários minutos | É normal: o Gradle baixa as ferramentas e compila tudo. Depois fica rápido. |
+| `flutter.sdk not set in local.properties` | O arquivo `android/local.properties` não existe. Ele é gerado pelo Flutter: rode `flutter pub get` na raiz do projeto. Não abra só a pasta `android` no editor. |
 
 ## 9. Editando os dados e as fotos
 
@@ -462,7 +428,7 @@ O Nº 5 é achado por `no 5`, `no5` ou `5`. As palavras "de", "da" e "do" são i
   ao fechar o app (os favoritos também são zerados ao sair da conta). Os dados vêm de JSON
   estáticos, como pede a avaliação.
 - O botão de compartilhar depende do sistema (no desktop e na web, o comportamento varia).
-- No Linux, o emoji só aparece colorido se houver uma fonte de emoji instalada.
+- Os emojis das notas usam a fonte de emoji do sistema, sem fonte embutida no projeto. No Android e no Windows aparecem coloridos; em computadores Linux podem aparecer sem cor se não houver uma fonte de emoji instalada (por exemplo, `sudo apt install fonts-noto-color-emoji`).
 
 ## 11. Créditos e avisos
 
