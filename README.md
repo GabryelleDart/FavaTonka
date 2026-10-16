@@ -234,8 +234,12 @@ flutter pub get
 > Se o VS Code mostrar o aviso "Get packages", clique nele: faz o mesmo que `flutter pub get`.
 > Logo depois de abrir o projeto, é normal ver muitos erros em `lib/` até as bibliotecas serem baixadas.
 
-> **A primeira execução demora** (de 3 a 10 minutos no Android). O Gradle baixa suas ferramentas e
-> compila tudo do zero. Da segunda vez em diante leva segundos. Não cancele.
+> [!WARNING]
+> **A primeira execução no Android demora (vários minutos) e precisa de internet.** O Gradle baixa
+> dependências e compila o app. Rode `flutter run` **uma única vez** e espere terminar:
+> enquanto aparecer `Running Gradle task 'assembleDebug'...`, não cancele nem rode de novo, e não abra
+> nem sincronize a pasta `android` no editor ao mesmo tempo. Se isso acontecer, o build pode falhar
+> com `Timeout waiting to lock build logic queue` (veja a seção 8).
 
 ### 7.4 Forma 1: emulador do Android Studio (Medium Phone)
 
@@ -382,6 +386,7 @@ Para usar sem login, basta não entrar: a tela de login tem o botão "Continuar 
 | Mensagem ou sintoma | Causa e solução |
 |---|---|
 | `SDK location not found` | O Gradle não achou o Android SDK. Rode `flutter config --android-sdk "<caminho do SDK>"` e depois `flutter pub get`. No Windows o caminho costuma ser `C:\Users\<usuário>\AppData\Local\Android\Sdk`. |
+| `Timeout waiting to lock build logic queue` ou `Lock file: ...\android\.gradle\noVersion\buildLogic.lock` (e `BUILD FAILED` em `assembleDebug`) | Dois processos Gradle disputaram o mesmo arquivo, em geral porque o editor estava importando a pasta `android` ao mesmo tempo que o `flutter run`, ou uma execução anterior foi interrompida. **1)** Encerre os processos Java: `taskkill /F /IM java.exe` (Windows) ou `pkill -f gradle` (Linux e macOS). **2)** Apague a pasta de trabalho: `rmdir /S /Q android\.gradle` (Windows) ou `rm -rf android/.gradle` (Linux e macOS). **3)** Rode `flutter clean`, `flutter pub get` e `flutter run`, uma vez só, esperando terminar. |
 | `Some Android licenses not accepted` | Rode `flutter doctor --android-licenses` e aceite tudo com `y`. |
 | `The Android emulator exited with code 1` | Virtualização desligada ou emulador travado. Ative VT-x/SVM na BIOS, ative a *Plataforma do Hipervisor do Windows*, use *Cold Boot Now* no Device Manager ou troque Graphics para *Software*. Para ver a causa: `emulator -avd <nome> -verbose`. |
 | `Plugin with id 'com.android.library' not found` (projetos `jni`, `jni_flutter` ou `share_plus`) | Aviso do editor, que abre a pasta `android` de cada plugin isoladamente. Não afeta o app: se o `flutter run` funciona, ignore. O arquivo `.vscode/settings.json` do repositório já desliga essa análise; se o aviso continuar, use `Ctrl+Shift+P` e "Developer: Reload Window". |
