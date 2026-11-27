@@ -1,0 +1,90 @@
+# FavaTonka - back-end (um serviço = um container)
+#
+#   perfumes     -> http://localhost:5001   consulta de perfumes, famílias e notas
+#   comentarios  -> http://localhost:5002   listagem, cadastro e remoção de comentários
+#   favoritos    -> http://localhost:5003   favoritos de cada usuário
+#   banco        -> localhost:5004          MySQL (porta interna 3306)
+#   arquivos     -> http://localhost:5005   servidor de arquivos (fotos dos perfumes)
+
+name: favatonka
+
+services:
+  banco:
+    image: mysql:8.0
+    container_name: banco
+    hostname: banco
+    restart: always
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=favatonka
+    ports:
+      - "5004:3306"
+    volumes:
+      - dados_banco:/var/lib/mysql
+      # Os scripts desta pasta criam as tabelas e inserem os dados na primeira vez
+      - ./banco/inicializacao:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-padmin"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  perfumes:
+    build: ./dockerfiles/python
+    container_name: perfumes
+    hostname: perfumes
+    restart: always
+    depends_on:
+      banco:
+        condition: service_healthy
+    volumes:
+      - ./perfumes:/servico
+    command: python3 /servico/perfumes.py
+    ports:
+      - "5001:5000"
+
+  comentarios:
+    build: ./dockerfiles/python
+    container_name: comentarios
+    hostname: comentarios
+    restart: always
+    depends_on:
+      banco:
+        condition: service_healthy
+    volumes:
+      - ./comentarios:/servico
+    command: python3 /servico/comentarios.py
+    ports:
+      - "5002:5000"
+
+  favoritos:
+    build: ./dockerfiles/python
+    container_name: favoritos
+    hostname: favoritos
+    restart: always
+    depends_on:
+      banco:
+        condition: service_healthy
+    volumes:
+      - ./favoritos:/servico
+    command: python3 /servico/favoritos.py
+    ports:
+      - "5003:5000"
+
+  arquivos:
+    build: ./dockerfiles/nginx
+    container_name: arquivos
+    hostname: arquivos
+    restart: always
+    volumes:
+      - ./imagens:/usr/share/nginx/html:ro
+    ports:
+      - "5005:80"
+
+volumes:
+  dados_banco:
