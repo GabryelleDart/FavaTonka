@@ -1,4 +1,5 @@
 import 'dart:ui' show PointerDeviceKind;
+
 import 'package:favatonka/gerenciador_estado.dart';
 import 'package:favatonka/tema.dart';
 import 'package:favatonka/telas/catalogo.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => GerenciadorEstado()..carregarDados(),
+      create: (_) => GerenciadorEstado(),
       child: const FavaTonka(),
     ),
   );

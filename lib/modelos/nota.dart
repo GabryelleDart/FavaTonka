@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Nota olfativa. Vem pronta do serviço "perfumes" (nome, emoji e cores).
 class Nota {
   final String chave;
   final String nome;
@@ -15,31 +16,13 @@ class Nota {
     required this.cor2,
   });
 
-  /// Foto opcional da nota. Se o arquivo não existir, o app usa o
-  /// círculo com gradiente e emoji.
-  String get caminhoImagem => 'recursos/imagens/notas/$chave.jpg';
-
-  factory Nota.fromJson(String chave, Map<String, dynamic> json) {
+  factory Nota.fromJson(Map<String, dynamic> json) {
     return Nota(
-      chave: chave,
+      chave: json['chave'] as String,
       nome: json['nome'] as String,
       emoji: json['emoji'] as String,
       cor1: _cor(json['cor1'] as String),
       cor2: _cor(json['cor2'] as String),
-    );
-  }
-
-  factory Nota.desconhecida(String chave) {
-    final texto = chave.replaceAll('_', ' ');
-    final nome = texto.isEmpty
-        ? chave
-        : '${texto[0].toUpperCase()}${texto.substring(1)}';
-    return Nota(
-      chave: chave,
-      nome: nome,
-      emoji: '✨',
-      cor1: const Color(0xFFF3E7D3),
-      cor2: const Color(0xFFC8A15B),
     );
   }
 

@@ -1,10 +1,8 @@
 import 'package:favatonka/componentes/avatar_nota.dart';
-import 'package:favatonka/gerenciador_estado.dart';
 import 'package:favatonka/modelos/nota.dart';
 import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/tema.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PiramideOlfativa extends StatelessWidget {
   final Perfume perfume;
@@ -32,10 +30,9 @@ class PiramideOlfativa extends StatelessWidget {
     BuildContext context,
     String titulo,
     String legenda,
-    List<String> chaves,
+    List<Nota> notas,
   ) {
-    if (chaves.isEmpty) return const SizedBox.shrink();
-    final estado = context.read<GerenciadorEstado>();
+    if (notas.isEmpty) return const SizedBox.shrink();
     final p = context.paleta;
 
     return Padding(
@@ -65,12 +62,12 @@ class PiramideOlfativa extends StatelessWidget {
             spacing: 4,
             runSpacing: 14,
             children: [
-              for (final k in chaves)
+              for (final nota in notas)
                 AvatarNota(
-                  nota: estado.nota(k),
+                  nota: nota,
                   tamanho: 64,
                   mostrarNome: true,
-                  onTap: () => onNotaTap(estado.nota(k)),
+                  onTap: () => onNotaTap(nota),
                 ),
             ],
           ),

@@ -1,12 +1,21 @@
+// ignore_for_file: constant_identifier_names
+
+import 'dart:async';
+
+import 'package:favatonka/api/servicos.dart';
 import 'package:favatonka/autenticador.dart';
 import 'package:favatonka/componentes/cartao_perfume.dart';
 import 'package:favatonka/componentes/logo.dart';
 import 'package:favatonka/gerenciador_estado.dart';
+import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/tema.dart';
 import 'package:favatonka/telas/favoritos.dart';
 import 'package:favatonka/telas/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+/// Quantos perfumes o app pede ao serviço de cada vez (lazy-loading).
+const int TAMANHO_PAGINA = 6;
 
 class TelaCatalogo extends StatefulWidget {
   const TelaCatalogo({super.key});
@@ -16,15 +25,142 @@ class TelaCatalogo extends StatefulWidget {
 }
 
 class _TelaCatalogoState extends State<TelaCatalogo> {
-  final _controladorBusca = TextEditingController();
-  String _busca = '';
+  final ServicoPerfumes _servico = ServicoPerfumes();
+  final ScrollController _rolagem = ScrollController();
+  final TextEditingController _controladorBusca = TextEditingController();
+  Timer? _esperaDigitacao;
+
+  final List<Perfume> _perfumes = [];
+  List<String> _familias = [];
+
+  int _ultimoId = 0; // id do último perfume recebido (marcador da paginação)
+  bool _carregando = false;
+  bool _temMais = true;
+  bool _erro = false;
+
+  String _textoDigitado = '';
+  String _busca = ''; // o que já foi enviado ao serviço
   String? _familia;
+
+  // Cada nova busca ou filtro aumenta este número. Respostas antigas, que
+  // chegam atrasadas, são descartadas.
+  int _geracao = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _rolagem.addListener(_aoRolar);
+    _carregarFamilias();
+    _carregarMais();
+  }
 
   @override
   void dispose() {
+    _esperaDigitacao?.cancel();
+    _rolagem.dispose();
     _controladorBusca.dispose();
     super.dispose();
   }
+
+  // ---------------------------------------------------------------- lazy-loading
+
+  /// Quando faltam menos de 400 pixels para o fim da lista, pede a próxima página.
+  void _aoRolar() {
+    if (_rolagem.hasClients && _rolagem.position.extentAfter < 400) {
+      _carregarMais();
+    }
+  }
+
+  Future<void> _carregarMais() async {
+    if (_carregando || !_temMais || _erro) return;
+
+    final geracao = _geracao;
+    setState(() => _carregando = true);
+
+    try {
+      final lote = await _servico.listar(
+        ultimoId: _ultimoId,
+        tamanho: TAMANHO_PAGINA,
+        busca: _busca,
+        familia: _familia,
+      );
+      if (!mounted || geracao != _geracao) return;
+
+      setState(() {
+        _perfumes.addAll(lote);
+        if (lote.isNotEmpty) _ultimoId = lote.last.id;
+        _temMais = lote.length == TAMANHO_PAGINA;
+        _carregando = false;
+      });
+    } catch (e) {
+      if (!mounted || geracao != _geracao) return;
+      setState(() {
+        _erro = true;
+        _carregando = false;
+      });
+      return;
+    }
+
+    // Se a lista ainda não encheu a tela (não há o que rolar), pede mais.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (_rolagem.hasClients && _rolagem.position.maxScrollExtent <= 0) {
+        _carregarMais();
+      }
+    });
+  }
+
+  Future<void> _carregarFamilias() async {
+    try {
+      final familias = await _servico.familias();
+      if (!mounted) return;
+      setState(() => _familias = familias);
+    } catch (e) {
+      // sem as famílias o app continua funcionando, só não mostra os filtros
+      debugPrint('Erro ao carregar famílias: $e');
+    }
+  }
+
+  /// Volta ao começo da lista (nova busca, novo filtro ou "puxar para atualizar").
+  Future<void> _reiniciar() async {
+    _geracao++;
+    setState(() {
+      _perfumes.clear();
+      _ultimoId = 0;
+      _temMais = true;
+      _erro = false;
+      _carregando = false;
+    });
+    if (_familias.isEmpty) _carregarFamilias();
+    await _carregarMais();
+  }
+
+  /// Busca em tempo real: espera uma pausa curta na digitação e consulta o serviço.
+  void _aoDigitar(String texto) {
+    setState(() => _textoDigitado = texto);
+
+    _esperaDigitacao?.cancel();
+    _esperaDigitacao = Timer(const Duration(milliseconds: 250), () {
+      _busca = texto.trim();
+      _reiniciar();
+    });
+  }
+
+  void _limparBusca() {
+    _esperaDigitacao?.cancel();
+    _controladorBusca.clear();
+    setState(() => _textoDigitado = '');
+    _busca = '';
+    _reiniciar();
+  }
+
+  void _escolherFamilia(String? familia) {
+    _familia = familia;
+    _reiniciar();
+  }
+
+  // ---------------------------------------------------------------- botões do topo
 
   void _abrirFavoritos(GerenciadorEstado estado) {
     if (!estado.logado) {
@@ -45,6 +181,8 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TelaLogin()));
     }
   }
+
+  // ---------------------------------------------------------------- tela
 
   @override
   Widget build(BuildContext context) {
@@ -85,36 +223,14 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: larguraMaxima),
-          child: _corpo(estado),
+          child: _corpo(),
         ),
       ),
     );
   }
 
-  Widget _corpo(GerenciadorEstado estado) {
+  Widget _corpo() {
     final p = context.paleta;
-
-    if (estado.carregando && estado.perfumes.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (estado.erro != null && estado.perfumes.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(estado.erro!, style: TextStyle(color: p.texto)),
-            const SizedBox(height: 12),
-            FilledButton(
-              onPressed: estado.carregarDados,
-              child: const Text('Tentar novamente'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final lista = estado.perfumesFiltrados(_busca, _familia);
 
     return LayoutBuilder(
       builder: (context, caixa) {
@@ -133,24 +249,33 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
             (MediaQuery.textScalerOf(context).scale(14) / 14).clamp(1.0, 1.6).toDouble();
         final alturaCartao = larguraCartao * 1.25 + 92 * escala;
 
+        final semResultado = _perfumes.isEmpty && !_carregando && !_erro;
+
         return RefreshIndicator(
           color: p.titulo,
-          onRefresh: estado.carregarDados,
+          onRefresh: _reiniciar,
           child: CustomScrollView(
+            controller: _rolagem,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(child: _cabecalho(larga, margem)),
-              SliverToBoxAdapter(child: _filtros(estado, margem)),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(margem, 6, margem, 14),
-                  child: Text(
-                    lista.length == 1 ? '1 perfume' : '${lista.length} perfumes',
-                    style: TextStyle(fontSize: 12, color: p.textoSuave),
+              SliverToBoxAdapter(child: _filtros(margem)),
+              const SliverToBoxAdapter(child: SizedBox(height: 14)),
+              if (_perfumes.isNotEmpty)
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: margem),
+                  sliver: SliverGrid.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: colunas,
+                      mainAxisSpacing: larga ? 28 : 20,
+                      crossAxisSpacing: espaco,
+                      mainAxisExtent: alturaCartao,
+                    ),
+                    itemCount: _perfumes.length,
+                    itemBuilder: (_, i) => CartaoPerfume(perfume: _perfumes[i]),
                   ),
                 ),
-              ),
-              if (lista.isEmpty)
+              if (semResultado)
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 80),
@@ -161,26 +286,62 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                       ),
                     ),
                   ),
-                )
-              else
-                SliverPadding(
-                  padding: EdgeInsets.fromLTRB(margem, 0, margem, 40),
-                  sliver: SliverGrid.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: colunas,
-                      mainAxisSpacing: larga ? 28 : 20,
-                      crossAxisSpacing: espaco,
-                      mainAxisExtent: alturaCartao,
-                    ),
-                    itemCount: lista.length,
-                    itemBuilder: (_, i) => CartaoPerfume(perfume: lista[i]),
-                  ),
                 ),
+              SliverToBoxAdapter(child: _rodape()),
             ],
           ),
         );
       },
     );
+  }
+
+  /// Parte de baixo da lista: indicador de carregamento, erro ou fim.
+  Widget _rodape() {
+    final p = context.paleta;
+
+    if (_carregando) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (_erro) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+        child: Column(
+          children: [
+            Text(
+              'Não foi possível carregar os perfumes.\nConfira se os containers estão rodando.',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: p.textoSuave, height: 1.5),
+            ),
+            const SizedBox(height: 12),
+            FilledButton(
+              onPressed: () {
+                setState(() => _erro = false);
+                _carregarMais();
+              },
+              child: const Text('Tentar novamente'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (!_temMais && _perfumes.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 40),
+        child: Center(
+          child: Text(
+            'Fim da vitrine',
+            style: TextStyle(fontSize: 12, color: p.textoSuave),
+          ),
+        ),
+      );
+    }
+
+    return const SizedBox(height: 40);
   }
 
   Widget _cabecalho(bool larga, double margem) {
@@ -209,7 +370,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
 
     final busca = TextField(
       controller: _controladorBusca,
-      onChanged: (v) => setState(() => _busca = v),
+      onChanged: _aoDigitar,
       style: TextStyle(color: p.texto, fontSize: 14),
       decoration: InputDecoration(
         hintText: 'Buscar perfume, marca ou nota',
@@ -217,13 +378,10 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
         filled: true,
         fillColor: p.superficie,
         prefixIcon: Icon(Icons.search, color: p.textoSuave),
-        suffixIcon: _busca.isEmpty
+        suffixIcon: _textoDigitado.isEmpty
             ? null
             : IconButton(
-                onPressed: () {
-                  _controladorBusca.clear();
-                  setState(() => _busca = '');
-                },
+                onPressed: _limparBusca,
                 icon: Icon(Icons.close, color: p.textoSuave),
               ),
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
@@ -260,16 +418,16 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
     );
   }
 
-  Widget _filtros(GerenciadorEstado estado, double margem) {
+  Widget _filtros(double margem) {
     return SizedBox(
       height: 44,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: margem),
         children: [
-          _chip('Todos', _familia == null, () => setState(() => _familia = null)),
-          for (final f in estado.familias)
-            _chip(f, _familia == f, () => setState(() => _familia = f)),
+          _chip('Todos', _familia == null, () => _escolherFamilia(null)),
+          for (final f in _familias)
+            _chip(f, _familia == f, () => _escolherFamilia(f)),
         ],
       ),
     );

@@ -2,7 +2,8 @@ import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/tema.dart';
 import 'package:flutter/material.dart';
 
-
+/// Foto do perfume, baixada do container "arquivos" (nginx).
+/// Enquanto carrega, ou se o servidor estiver fora do ar, desenha um frasco estilizado.
 class FotoPerfume extends StatelessWidget {
   final Perfume perfume;
   final BoxFit fit;
@@ -17,24 +18,28 @@ class FotoPerfume extends StatelessWidget {
     [Color(0xFFA0522D), Color(0xFF41200F)],
   ];
 
+  Widget _frasco() {
+    final cores = _paletas[perfume.id % _paletas.length];
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: cores,
+        ),
+      ),
+      child: CustomPaint(painter: _FrascoPainter(), child: const SizedBox.expand()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      perfume.caminhoFoto,
+    return Image.network(
+      perfume.urlFoto,
       fit: fit,
-      errorBuilder: (_, _, _) {
-        final cores = _paletas[perfume.id % _paletas.length];
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: cores,
-            ),
-          ),
-          child: CustomPaint(painter: _FrascoPainter(), child: const SizedBox.expand()),
-        );
-      },
+      loadingBuilder: (context, filho, progresso) =>
+          progresso == null ? filho : _frasco(),
+      errorBuilder: (context, erro, pilha) => _frasco(),
     );
   }
 }

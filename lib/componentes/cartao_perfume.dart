@@ -23,14 +23,13 @@ class CartaoPerfume extends StatelessWidget {
     final estado = context.watch<GerenciadorEstado>();
     final p = context.paleta;
     final favorito = estado.ehFavorito(perfume.id);
-    final todas = perfume.coracao.isNotEmpty ? perfume.coracao : perfume.todasNotas;
-    final chaves = todas.take(4).toList();
+    final notas = perfume.notasPreview;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
-        onTap: () => abrirDetalhes(context, perfume.id, '$prefixoHero-${perfume.id}'),
+        onTap: () => abrirDetalhes(context, perfume, '$prefixoHero-${perfume.id}'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,7 +85,7 @@ class CartaoPerfume extends StatelessWidget {
             const SizedBox(height: 8),
             SizedBox(
               height: 26,
-              child: chaves.isEmpty
+              child: notas.isEmpty
                   ? Text(
                       'notas em breve',
                       style: TextStyle(fontSize: 11, color: p.textoSuave),
@@ -96,15 +95,15 @@ class CartaoPerfume extends StatelessWidget {
                         // Cada círculo ocupa ~30px; sobra espaço para o "+N".
                         final cabem =
                             ((caixa.maxWidth - 30) / 30).floor().clamp(1, 4).toInt();
-                        final mostrar = chaves.take(cabem).toList();
-                        final restantes = perfume.todasNotas.length - mostrar.length;
+                        final mostrar = notas.take(cabem).toList();
+                        final restantes = perfume.totalNotas - mostrar.length;
 
                         return Row(
                           children: [
-                            for (final k in mostrar)
+                            for (final nota in mostrar)
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
-                                child: AvatarNota(nota: estado.nota(k), tamanho: 26),
+                                child: AvatarNota(nota: nota, tamanho: 26),
                               ),
                             if (restantes > 0)
                               Text(

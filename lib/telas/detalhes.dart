@@ -1,9 +1,13 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:favatonka/api/servicos.dart';
 import 'package:favatonka/componentes/avatar_nota.dart';
 import 'package:favatonka/componentes/cartao_comentario.dart';
 import 'package:favatonka/componentes/foto_perfume.dart';
 import 'package:favatonka/componentes/logo.dart';
 import 'package:favatonka/componentes/piramide_olfativa.dart';
 import 'package:favatonka/gerenciador_estado.dart';
+import 'package:favatonka/modelos/comentario.dart';
 import 'package:favatonka/modelos/nota.dart';
 import 'package:favatonka/modelos/perfume.dart';
 import 'package:favatonka/tema.dart';
@@ -12,36 +16,132 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-void abrirDetalhes(BuildContext context, int perfumeId, String heroTag) {
+/// Quantos comentários o app pede ao serviço de cada vez (lazy-loading).
+const int TAMANHO_PAGINA_COMENTARIOS = 5;
+
+void abrirDetalhes(BuildContext context, Perfume perfume, String heroTag) {
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) => TelaDetalhes(perfumeId: perfumeId, heroTag: heroTag),
+      builder: (_) => TelaDetalhes(perfumeInicial: perfume, heroTag: heroTag),
     ),
   );
 }
 
 class TelaDetalhes extends StatefulWidget {
-  final int perfumeId;
+  /// Perfume como veio da lista. Serve para mostrar foto e nome na hora,
+  /// enquanto o serviço devolve a descrição e a pirâmide completa.
+  final Perfume perfumeInicial;
   final String heroTag;
 
-  const TelaDetalhes({super.key, required this.perfumeId, required this.heroTag});
+  const TelaDetalhes({super.key, required this.perfumeInicial, required this.heroTag});
 
   @override
   State<TelaDetalhes> createState() => _TelaDetalhesState();
 }
 
 class _TelaDetalhesState extends State<TelaDetalhes> {
-  final _novoComentario = TextEditingController();
+  final ServicoPerfumes _servicoPerfumes = ServicoPerfumes();
+  final ServicoComentarios _servicoComentarios = ServicoComentarios();
+  final TextEditingController _novoComentario = TextEditingController();
+  final ScrollController _rolagem = ScrollController();
+
+  Perfume? _completo; // perfume com descrição e pirâmide, vindo do serviço
+  bool _erroPerfume = false;
+
+  final List<Comentario> _comentarios = [];
+  int _ultimoComentario = ultimoIdInicial;
+  bool _carregandoComentarios = false;
+  bool _temMaisComentarios = true;
+  bool _erroComentarios = false;
+
+  int get _idPerfume => widget.perfumeInicial.id;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _rolagem.addListener(_aoRolar);
+    _carregarPerfume();
+    _carregarComentarios();
+  }
 
   @override
   void dispose() {
     _novoComentario.dispose();
+    _rolagem.dispose();
     super.dispose();
   }
 
-    void _pedirLogin(String motivo) {
+  // ---------------------------------------------------------------- carregamento
+
+  Future<void> _carregarPerfume() async {
+    setState(() => _erroPerfume = false);
+    try {
+      final perfume = await _servicoPerfumes.obter(_idPerfume);
+      if (!mounted) return;
+      setState(() => _completo = perfume);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _erroPerfume = true);
+    }
+  }
+
+  /// Lazy-loading dos comentários: perto do fim da página, pede os próximos.
+  void _aoRolar() {
+    if (_erroComentarios) return;
+    if (_rolagem.hasClients && _rolagem.position.extentAfter < 300) {
+      _carregarComentarios();
+    }
+  }
+
+  Future<void> _carregarComentarios() async {
+    if (_carregandoComentarios || !_temMaisComentarios) return;
+
+    setState(() {
+      _carregandoComentarios = true;
+      _erroComentarios = false;
+    });
+
+    try {
+      final lote = await _servicoComentarios.listar(
+        perfumeId: _idPerfume,
+        ultimoId: _ultimoComentario,
+        tamanho: TAMANHO_PAGINA_COMENTARIOS,
+      );
+      if (!mounted) return;
+
+      setState(() {
+        _comentarios.addAll(lote);
+        if (lote.isNotEmpty) _ultimoComentario = lote.last.id;
+        _temMaisComentarios = lote.length == TAMANHO_PAGINA_COMENTARIOS;
+        _carregandoComentarios = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _carregandoComentarios = false;
+        _erroComentarios = true;
+      });
+    }
+  }
+
+  void _reiniciarComentarios() {
+    setState(() {
+      _comentarios.clear();
+      _ultimoComentario = ultimoIdInicial;
+      _temMaisComentarios = true;
+      _carregandoComentarios = false;
+      _erroComentarios = false;
+    });
+    _carregarComentarios();
+  }
+
+  // ---------------------------------------------------------------- ações
+
+  void _pedirLogin(String motivo) {
     final messenger = ScaffoldMessenger.of(context);
     final navegador = Navigator.of(context);
+
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
@@ -56,22 +156,33 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
     );
   }
 
-  void _favoritar(GerenciadorEstado estado, Perfume perfume) {
+  Future<void> _favoritar(GerenciadorEstado estado, Perfume perfume) async {
     if (!estado.logado) {
       _pedirLogin('Entre para favoritar perfumes');
       return;
     }
-    estado.alternarFavorito(perfume.id);
+
+    final eraFavorito = estado.ehFavorito(perfume.id);
+    final ok = await estado.alternarFavorito(perfume.id);
+    if (!mounted) return;
+
+    if (!ok) {
+      avisar(context, 'Não foi possível atualizar os favoritos');
+      return;
+    }
     avisar(
       context,
-      estado.ehFavorito(perfume.id)
-          ? '${perfume.nome} adicionado aos favoritos'
-          : '${perfume.nome} removido dos favoritos',
+      eraFavorito
+          ? '${perfume.nome} removido dos favoritos'
+          : '${perfume.nome} adicionado aos favoritos',
     );
   }
 
-  void _compartilhar(GerenciadorEstado estado, Perfume perfume) {
-    final notas = perfume.todasNotas.take(5).map((k) => estado.nota(k).nome).join(', ');
+  void _compartilhar(Perfume perfume) {
+    final notas = (perfume.todasNotas.isNotEmpty ? perfume.todasNotas : perfume.notasPreview)
+        .take(5)
+        .map((n) => n.nome)
+        .join(', ');
     final titulo = perfume.marca.isEmpty ? perfume.nome : '${perfume.nome} — ${perfume.marca}';
     final texto = notas.isEmpty
         ? '$titulo, conheça no FavaTonka!'
@@ -80,17 +191,33 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
     SharePlus.instance.share(ShareParams(title: 'FavaTonka', text: texto));
   }
 
-  void _enviarComentario(GerenciadorEstado estado, Perfume perfume) {
+  Future<void> _enviarComentario(GerenciadorEstado estado) async {
     final texto = _novoComentario.text.trim();
-    if (texto.isEmpty) return;
+    final usuario = estado.usuario;
+    if (texto.isEmpty || usuario == null) return;
 
-    estado.adicionarComentario(perfume.id, texto);
-    _novoComentario.clear();
-    FocusScope.of(context).unfocus();
-    avisar(context, 'Comentário adicionado');
+    try {
+      final ok = await _servicoComentarios.adicionar(_idPerfume, usuario, texto);
+      if (!mounted) return;
+
+      if (ok) {
+        _novoComentario.clear();
+        FocusScope.of(context).unfocus();
+        _reiniciarComentarios(); // recarrega do começo: o novo aparece no topo
+        avisar(context, 'Comentário adicionado');
+      } else {
+        avisar(context, 'Não foi possível enviar o comentário');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      avisar(context, 'Não foi possível enviar o comentário');
+    }
   }
 
-  Future<void> _apagarComentario(GerenciadorEstado estado, int id) async {
+  Future<void> _apagarComentario(GerenciadorEstado estado, Comentario comentario) async {
+    final usuario = estado.usuario;
+    if (usuario == null) return;
+
     final confirmou = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -107,13 +234,28 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
         ],
       ),
     );
+    if (confirmou != true) return;
 
-    if (confirmou == true) estado.removerComentario(id);
+    try {
+      final ok = await _servicoComentarios.remover(comentario.id, usuario);
+      if (!mounted) return;
+
+      if (ok) {
+        setState(() => _comentarios.removeWhere((c) => c.id == comentario.id));
+      } else {
+        avisar(context, 'Não foi possível apagar o comentário');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      avisar(context, 'Não foi possível apagar o comentário');
+    }
   }
 
-  void _mostrarNota(GerenciadorEstado estado, Nota nota, Perfume atual) {
+  void _mostrarNota(Nota nota, Perfume atual) {
     final p = context.paleta;
-    final outros = estado.perfumesComNota(nota.chave).where((x) => x.id != atual.id).toList();
+    final navegador = Navigator.of(context);
+    // pergunta ao serviço em quais perfumes esta nota aparece
+    final futuro = _servicoPerfumes.comNota(nota.chave);
 
     showModalBottomSheet<void>(
       context: context,
@@ -139,54 +281,81 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
               ),
             ),
             const SizedBox(height: 14),
-            Text(
-              outros.isEmpty
-                  ? 'Nenhum outro perfume da vitrine tem esta nota.'
-                  : 'Também está em:',
-              style: TextStyle(color: p.textoSuave),
-            ),
-            if (outros.isNotEmpty)
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    for (final o in outros)
-                      ListTile(
-                        leading: SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: ClipOval(child: FotoPerfume(perfume: o)),
-                        ),
-                        title: Text(o.nome, style: TextStyle(color: p.texto)),
-                        subtitle: o.marca.isEmpty
-                            ? null
-                            : Text(o.marca, style: TextStyle(color: p.textoSuave)),
-                        onTap: () {
-                          Navigator.of(ctx).pop();
-                          abrirDetalhes(context, o.id, 'nota-${o.id}');
-                        },
+            FutureBuilder<List<Perfume>>(
+              future: futuro,
+              builder: (ctx, resultado) {
+                if (resultado.connectionState != ConnectionState.done) {
+                  return const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (resultado.hasError) {
+                  return Text(
+                    'Não foi possível carregar os perfumes desta nota.',
+                    style: TextStyle(color: p.textoSuave),
+                  );
+                }
+
+                final outros = resultado.data!.where((x) => x.id != atual.id).toList();
+                return Flexible(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        outros.isEmpty
+                            ? 'Nenhum outro perfume da vitrine tem esta nota.'
+                            : 'Também está em:',
+                        style: TextStyle(color: p.textoSuave),
                       ),
-                  ],
-                ),
-              ),
+                      if (outros.isNotEmpty)
+                        Flexible(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              for (final o in outros)
+                                ListTile(
+                                  leading: SizedBox(
+                                    width: 44,
+                                    height: 44,
+                                    child: ClipOval(child: FotoPerfume(perfume: o)),
+                                  ),
+                                  title: Text(o.nome, style: TextStyle(color: p.texto)),
+                                  subtitle: o.marca.isEmpty
+                                      ? null
+                                      : Text(o.marca, style: TextStyle(color: p.textoSuave)),
+                                  onTap: () {
+                                    Navigator.of(ctx).pop();
+                                    navegador.push(
+                                      MaterialPageRoute(
+                                        builder: (_) => TelaDetalhes(
+                                          perfumeInicial: o,
+                                          heroTag: 'nota-${o.id}',
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
+  // ---------------------------------------------------------------- tela
+
   @override
   Widget build(BuildContext context) {
     final estado = context.watch<GerenciadorEstado>();
-    final perfume = estado.perfumePorId(widget.perfumeId);
-
-    if (perfume == null) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: Text('Perfume não encontrado')),
-      );
-    }
-
+    final perfume = _completo ?? widget.perfumeInicial;
     final p = context.paleta;
     final larga = telaLarga(context);
     final favorito = estado.ehFavorito(perfume.id);
@@ -216,7 +385,7 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
             ),
           ),
           IconButton(
-            onPressed: () => _compartilhar(estado, perfume),
+            onPressed: () => _compartilhar(perfume),
             tooltip: 'Compartilhar',
             icon: const Icon(Icons.share_outlined),
           ),
@@ -228,6 +397,7 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
         ),
       ),
       body: SingleChildScrollView(
+        controller: _rolagem,
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1120),
@@ -257,9 +427,44 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
     );
   }
 
+  Widget _piramide(Perfume perfume) {
+    final p = context.paleta;
+
+    if (_completo == null) {
+      if (_erroPerfume) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Não foi possível carregar as notas deste perfume.',
+              style: TextStyle(color: p.textoSuave),
+            ),
+            const SizedBox(height: 8),
+            TextButton(onPressed: _carregarPerfume, child: const Text('Tentar novamente')),
+          ],
+        );
+      }
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (!perfume.temNotas) {
+      return Text(
+        'As notas olfativas deste perfume serão adicionadas em breve.',
+        style: TextStyle(color: p.textoSuave),
+      );
+    }
+
+    return PiramideOlfativa(
+      perfume: perfume,
+      onNotaTap: (nota) => _mostrarNota(nota, perfume),
+    );
+  }
+
   Widget _conteudo(GerenciadorEstado estado, Perfume perfume) {
     final p = context.paleta;
-    final comentarios = estado.comentariosDe(perfume.id);
     final subtitulo = [
       perfume.marca,
       if (perfume.ano != null) perfume.ano.toString(),
@@ -317,84 +522,120 @@ class _TelaDetalhesState extends State<TelaDetalhes> {
           style: TextStyle(fontSize: 12, color: p.textoSuave),
         ),
         const SizedBox(height: 20),
-        if (perfume.temNotas)
-          PiramideOlfativa(
-            perfume: perfume,
-            onNotaTap: (n) => _mostrarNota(estado, n, perfume),
-          )
-        else
-          Text(
-            'As notas olfativas deste perfume serão adicionadas em breve.',
-            style: TextStyle(color: p.textoSuave),
-          ),
+        _piramide(perfume),
         const SizedBox(height: 20),
         _Secao('Comentários', p),
         const SizedBox(height: 16),
-        if (estado.logado)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: TextField(
-              controller: _novoComentario,
-              textInputAction: TextInputAction.send,
-              style: TextStyle(color: p.texto),
-              onSubmitted: (_) => _enviarComentario(estado, perfume),
-              decoration: InputDecoration(
-                hintText: 'Escreva seu comentário...',
-                hintStyle: TextStyle(color: p.textoSuave, fontSize: 14),
-                filled: true,
-                fillColor: p.superficie,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: p.borda),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: p.borda),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: p.destaque, width: 1.4),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () => _enviarComentario(estado, perfume),
-                  icon: Icon(Icons.send, color: p.titulo),
-                  tooltip: 'Enviar',
-                ),
-              ),
-            ),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(
-                foregroundColor: p.titulo,
-                side: BorderSide(color: p.destaque),
-                shape: const StadiumBorder(),
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
-              ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const TelaLogin()),
-              ),
-              icon: const Icon(Icons.person_outline),
-              label: const Text('Entre para comentar'),
-            ),
-          ),
-        if (comentarios.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text('Ainda não há comentários.', style: TextStyle(color: p.textoSuave)),
-          )
-        else
-          for (final c in comentarios)
-            CartaoComentario(
-              comentario: c,
-              doUsuarioLogado: estado.usuario?.email == c.email,
-              onApagar: () => _apagarComentario(estado, c.id),
-            ),
+        _campoComentario(estado),
+        ..._listaComentarios(estado),
       ],
     );
+  }
+
+  Widget _campoComentario(GerenciadorEstado estado) {
+    final p = context.paleta;
+
+    if (!estado.logado) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: p.titulo,
+            side: BorderSide(color: p.destaque),
+            shape: const StadiumBorder(),
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          ),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const TelaLogin()),
+          ),
+          icon: const Icon(Icons.person_outline),
+          label: const Text('Entre para comentar'),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: TextField(
+        controller: _novoComentario,
+        textInputAction: TextInputAction.send,
+        maxLength: 500,
+        style: TextStyle(color: p.texto),
+        onSubmitted: (_) => _enviarComentario(estado),
+        decoration: InputDecoration(
+          hintText: 'Escreva seu comentário...',
+          hintStyle: TextStyle(color: p.textoSuave, fontSize: 14),
+          counterText: '',
+          filled: true,
+          fillColor: p.superficie,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: p.borda),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: p.borda),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: p.destaque, width: 1.4),
+          ),
+          suffixIcon: IconButton(
+            onPressed: () => _enviarComentario(estado),
+            icon: Icon(Icons.send, color: p.titulo),
+            tooltip: 'Enviar',
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _listaComentarios(GerenciadorEstado estado) {
+    final p = context.paleta;
+
+    return [
+      if (_comentarios.isEmpty && !_carregandoComentarios && !_erroComentarios)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Text('Ainda não há comentários.', style: TextStyle(color: p.textoSuave)),
+        ),
+      for (final c in _comentarios)
+        CartaoComentario(
+          comentario: c,
+          doUsuarioLogado: estado.usuario?.email == c.email,
+          onApagar: () => _apagarComentario(estado, c),
+        ),
+      if (_carregandoComentarios)
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      if (_erroComentarios)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            children: [
+              Text(
+                'Não foi possível carregar os comentários.',
+                style: TextStyle(color: p.textoSuave),
+              ),
+              TextButton(
+                onPressed: _carregarComentarios,
+                child: const Text('Tentar novamente'),
+              ),
+            ],
+          ),
+        ),
+      // Alternativa ao rolar: botão para quem não tem rolagem (ex.: janela larga)
+      if (_temMaisComentarios && !_carregandoComentarios && !_erroComentarios && _comentarios.isNotEmpty)
+        Center(
+          child: TextButton(
+            onPressed: _carregarComentarios,
+            child: const Text('Ver mais comentários'),
+          ),
+        ),
+    ];
   }
 }
 

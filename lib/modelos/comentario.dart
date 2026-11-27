@@ -18,7 +18,7 @@ class Comentario {
   factory Comentario.fromJson(Map<String, dynamic> json) {
     return Comentario(
       id: json['id'] as int,
-      perfumeId: json['perfumeId'] as int,
+      perfumeId: json['perfume_id'] as int,
       nome: json['nome'] as String,
       email: json['email'] as String,
       data: DateTime.parse(json['data'] as String),
@@ -26,3 +26,4 @@ class Comentario {
     );
   }
 }
+
